@@ -28,18 +28,18 @@ const habitatService = {
   getHabitatById: async (id) => {
     try {
       const response = await api.get(`${API_ENDPOINTS.HABITAT}/${id}`);
+      console.log('API Response:', response);
       return response; 
     } catch (error) {
       console.error("Error fetching habitat by ID:", error);
       throw error.response?.data?.message || "Failed to fetch habitat";
     }
   },
-
   
   updateHabitat: async (id, habitatData) => {
     try {
       const response = await api.put(`${API_ENDPOINTS.HABITAT}/${id}`, habitatData);
-      return response.data; // Return the updated animal data
+      return response; // Return the updated animal data
     } catch (error) {
       console.error("Error updating habitat:", error);
       throw error.response?.data?.message || "Failed to update habitat";

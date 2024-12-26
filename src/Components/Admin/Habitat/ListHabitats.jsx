@@ -2,18 +2,16 @@ import React, { useState } from 'react';
 import {
   Box,
   Heading,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableContainer,
+  Grid,
+  Card,
+  CardBody,
+  Text,
+  Image,
+  Badge,
+  Button,
   useToast,
   Spinner,
   Flex,
-  IconButton,
-  Button,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -23,29 +21,25 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Text,
   useDisclosure,
-  Badge,
-  VStack,
-  HStack,
-  Stack,
-  Divider,
 } from '@chakra-ui/react';
-import { DeleteIcon, EditIcon, AddIcon } from '@chakra-ui/icons';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import habitatService from '../../../Services/habitatService';
 import CreateHabitat from './CreateHabitat';
+import HabitatDetails from './HabitatDetailModal'; // Import the HabitatDetails component
 
 const ListHabitat = () => {
   const [selectedHabitat, setSelectedHabitat] = useState(null);
   const [updatedHabitatData, setUpdatedHabitatData] = useState({});
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isEditOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
+  const { isOpen: isDetailsOpen, onOpen: onDetailsOpen, onClose: onDetailsClose } = useDisclosure();
   const toast = useToast();
   const queryClient = useQueryClient();
 
   const { data: habitats = [], isLoading, isError } = useQuery({
     queryKey: ['habitats'],
-    queryFn: habitatService.getAllHabitats,
+    queryFn: () => habitatService.getAllHabitats(),
     onError: (error) => {
       toast({
         title: 'Error fetching habitats',
@@ -91,7 +85,7 @@ const ListHabitat = () => {
         duration: 3000,
         isClosable: true,
       });
-      onClose();
+      onEditClose();
     },
     onError: (error) => {
       toast({
@@ -113,98 +107,127 @@ const ListHabitat = () => {
   const handleEdit = (habitat) => {
     setSelectedHabitat(habitat);
     setUpdatedHabitatData(habitat);
-    onOpen();
+    onEditOpen();
   };
 
   const handleUpdate = () => {
     updateHabitatMutation.mutate({ id: selectedHabitat._id, updatedData: updatedHabitatData });
   };
 
+  const handleDetails = (habitat) => {
+    setSelectedHabitat(habitat); // Set selected habitat for details
+    onDetailsOpen(); // Open the details modal
+  };
+
   if (isLoading) return <Spinner size="xl" color="green.500" display="block" mx="auto" my={6} />;
   if (isError) return <Text color="red.500" fontSize="lg" textAlign="center">Error loading habitats</Text>;
 
   return (
-    <Box p={6} maxW="6xl" mx="auto" bg="gray.50" borderRadius="lg" boxShadow="xl">
+    <Box p={6} maxW="7xl" mx="auto" bg="gray.50" borderRadius="lg" boxShadow="xl">
       <Flex justifyContent="space-between" alignItems="center" mb={6}>
-        <Heading size="lg" color="green.600">
-          Manage Habitats
-        </Heading>
-
-        <CreateHabitat isOpen={isOpen} onClose={onClose} />
+        <Heading size="lg" color="teal.600">Manage Habitats</Heading>
+        <CreateHabitat />
       </Flex>
 
-      <TableContainer bg="white" borderRadius="lg" boxShadow="lg">
-        <Table variant="striped" colorScheme="green">
-          <Thead>
-            <Tr>
-              <Th>Name</Th>
-              <Th>Description</Th>
-              <Th>Status</Th>
-              <Th>Actions</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {habitats.map((habitat) => (
-              <Tr key={habitat._id}>
-                <Td>
-                  <Text fontWeight="bold" color="green.800">
-                    {habitat.name}
-                  </Text>
-                </Td>
-                <Td>{habitat.description}</Td>
-                <Td>
-                  <Badge colorScheme="teal">Active</Badge>
-                </Td>
-                <Td>
-                  <HStack spacing={2}>
-                    <IconButton
-                      icon={<EditIcon />}
-                      colorScheme="blue"
-                      onClick={() => handleEdit(habitat)}
-                    />
-                    <IconButton
-                      icon={<DeleteIcon />}
-                      colorScheme="red"
-                      onClick={() => handleDelete(habitat._id)}
-                    />
-                  </HStack>
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
+      <Grid templateColumns={{ base: '1fr', md: '1fr 1fr', lg: '1fr 1fr 1fr' }} gap={8}>
+        {habitats.map((habitat) => (
+          <Card
+            key={habitat._id}
+            bg="white"
+            borderRadius="xl"
+            boxShadow="lg"
+            overflow="hidden"
+            transition="transform 0.2s"
+            _hover={{ transform: 'scale(1.03)' }}
+          >
+            <Image
+              src={habitat.imagesUrl[0]}
+              alt={habitat.name}
+              boxSize="100%"
+              objectFit="cover"
+              height="200px"
+            />
+            <CardBody p={4}>
+              <Text fontWeight="bold" color="teal.700" fontSize="lg" mb={2}>
+                {habitat.name}
+              </Text>
+              <Text mb={4} fontSize="sm" color="gray.600" noOfLines={2}>
+                {habitat.description}
+              </Text>
+              <Flex justifyContent="space-between" alignItems="center">
+                <Flex gap={3}>
+                  <Button
+                    size="sm"
+                    leftIcon={<EditIcon />}
+                    colorScheme="blue"
+                    onClick={() => handleEdit(habitat)}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    size="sm"
+                    leftIcon={<DeleteIcon />}
+                    colorScheme="red"
+                    onClick={() => handleDelete(habitat._id)}
+                  >
+                    Delete
+                  </Button>
+                  <Button
+                    size="sm"
+                    colorScheme="teal"
+                    onClick={() => handleDetails(habitat)}
+                  >
+                    Details
+                  </Button>
+                </Flex>
+              </Flex>
+            </CardBody>
+          </Card>
+        ))}
+      </Grid>
 
-      {/* Modal for Editing or Adding Habitat */}
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      {/* Habitat Details Modal */}
+      <Modal isOpen={isDetailsOpen} onClose={onDetailsClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{selectedHabitat ? 'Edit Habitat' : 'Add Habitat'}</ModalHeader>
+          <ModalHeader>Habitat Details</ModalHeader>
           <ModalBody>
-            <Stack spacing={4}>
-              <FormControl>
-                <FormLabel>Name</FormLabel>
-                <Input
-                  value={updatedHabitatData.name || ''}
-                  onChange={(e) => setUpdatedHabitatData({ ...updatedHabitatData, name: e.target.value })}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Description</FormLabel>
-                <Input
-                  value={updatedHabitatData.description || ''}
-                  onChange={(e) => setUpdatedHabitatData({ ...updatedHabitatData, description: e.target.value })}
-                />
-              </FormControl>
-            </Stack>
+            {selectedHabitat ? (
+              <HabitatDetails habitatId={selectedHabitat._id} />
+            ) : (
+              <Text>No habitat selected</Text>
+            )}
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="green" onClick={handleUpdate}>
-              Save
-            </Button>
-            <Button variant="ghost" onClick={onClose}>
-              Cancel
-            </Button>
+            <Button variant="ghost" onClick={onDetailsClose}>Close</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Update Modal */}
+      <Modal isOpen={isEditOpen} onClose={onEditClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Edit Habitat</ModalHeader>
+          <ModalBody>
+            <FormControl mb={4}>
+              <FormLabel>Name</FormLabel>
+              <Input
+                value={updatedHabitatData.name || ''}
+                onChange={(e) => setUpdatedHabitatData({ ...updatedHabitatData, name: e.target.value })}
+              />
+            </FormControl>
+            <FormControl mb={4}>
+              <FormLabel>Description</FormLabel>
+              <Input
+                value={updatedHabitatData.description || ''}
+                onChange={(e) => setUpdatedHabitatData({ ...updatedHabitatData, description: e.target.value })}
+              />
+            </FormControl>
+          </ModalBody>
+          <ModalFooter>
+            <Button variant="ghost" onClick={onEditClose}>Cancel</Button>
+            <Button colorScheme="blue" onClick={handleUpdate}>Save</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
