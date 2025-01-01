@@ -25,21 +25,20 @@ import {
   Input,
   Text,
   useDisclosure,
-  Badge,
-  VStack,
   HStack,
-  Stack,
-  Divider,
+  VStack,
+  Tooltip,
 } from '@chakra-ui/react';
-import { DeleteIcon, EditIcon, AddIcon } from '@chakra-ui/icons';
+import { DeleteIcon, EditIcon, AddIcon, InfoIcon } from '@chakra-ui/icons';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import zooService from '../../../Services/ZooService';
-import CreateService from './CreateService'
+import CreateService from './CreateService';
 
 const ListService = () => {
   const [selectedService, setSelectedService] = useState(null);
   const [updatedServiceData, setUpdatedServiceData] = useState({});
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isDetailOpen, onOpen: onDetailOpen, onClose: onDetailClose } = useDisclosure();
   const toast = useToast();
   const queryClient = useQueryClient();
 
@@ -120,54 +119,68 @@ const ListService = () => {
     updateServiceMutation.mutate({ id: selectedService._id, updatedData: updatedServiceData });
   };
 
+  const handleDetails = (service) => {
+    setSelectedService(service);
+    onDetailOpen();
+  };
+
   if (isLoading) return <Spinner size="xl" color="green.500" display="block" mx="auto" my={6} />;
   if (isError) return <Text color="red.500" fontSize="lg" textAlign="center">Error loading services</Text>;
 
   return (
-    <Box p={6} maxW="6xl" mx="auto" bg="gray.50" borderRadius="lg" boxShadow="xl">
+    <Box p={6} maxW="6xl" mx="auto">
       <Flex justifyContent="space-between" alignItems="center" mb={6}>
-        <Heading size="lg" color="green.600">
+        <Heading size="lg" color="gray.800" fontWeight="bold">
           Manage Zoo Services
         </Heading>
-        
         <CreateService isOpen={isOpen} onClose={onClose} />
-        
       </Flex>
 
       <TableContainer bg="white" borderRadius="lg" boxShadow="lg">
-        <Table variant="striped" colorScheme="green">
-          <Thead>
+        <Table variant="simple" size="md" colorScheme="gray">
+          <Thead bg="gray.100">
             <Tr>
               <Th>Name</Th>
-              <Th>Description</Th>
-              <Th>Status</Th>
               <Th>Actions</Th>
             </Tr>
           </Thead>
           <Tbody>
             {services.map((service) => (
-              <Tr key={service._id}>
+              <Tr key={service._id} _hover={{ bg: 'gray.50' }}>
                 <Td>
-                  <Text fontWeight="bold" color="green.800">
+                  <Text fontWeight="medium" color="green.800">
                     {service.name}
                   </Text>
                 </Td>
-                <Td>{service.description}</Td>
                 <Td>
-                  <Badge colorScheme="teal">Active</Badge>
-                </Td>
-                <Td>
-                  <HStack spacing={2}>
-                    <IconButton
-                      icon={<EditIcon />}
-                      colorScheme="blue"
-                      onClick={() => handleEdit(service)}
-                    />
-                    <IconButton
-                      icon={<DeleteIcon />}
-                      colorScheme="red"
-                      onClick={() => handleDelete(service._id)}
-                    />
+                  <HStack spacing={3}>
+                    <Tooltip label="Edit Service" placement="top">
+                      <IconButton
+                        icon={<EditIcon />}
+                        colorScheme="blue"
+                        aria-label="Edit Service"
+                        onClick={() => handleEdit(service)}
+                        size="sm"
+                      />
+                    </Tooltip>
+                    <Tooltip label="Delete Service" placement="top">
+                      <IconButton
+                        icon={<DeleteIcon />}
+                        colorScheme="red"
+                        aria-label="Delete Service"
+                        onClick={() => handleDelete(service._id)}
+                        size="sm"
+                      />
+                    </Tooltip>
+                    <Tooltip label="Service Details" placement="top">
+                      <IconButton
+                        icon={<InfoIcon />}
+                        colorScheme="teal"
+                        aria-label="Service Details"
+                        onClick={() => handleDetails(service)}
+                        size="sm"
+                      />
+                    </Tooltip>
                   </HStack>
                 </Td>
               </Tr>
@@ -176,13 +189,13 @@ const ListService = () => {
         </Table>
       </TableContainer>
 
-      {/* Modal for Editing or Adding Service */}
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      {/* Update Service Modal */}
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{selectedService ? 'Edit Service' : 'Add Service'}</ModalHeader>
+          <ModalHeader>Edit Service</ModalHeader>
           <ModalBody>
-            <Stack spacing={4}>
+            <VStack spacing={4} align="stretch">
               <FormControl>
                 <FormLabel>Name</FormLabel>
                 <Input
@@ -197,15 +210,28 @@ const ListService = () => {
                   onChange={(e) => setUpdatedServiceData({ ...updatedServiceData, description: e.target.value })}
                 />
               </FormControl>
-            </Stack>
+            </VStack>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="green" onClick={handleUpdate}>
-              Save
-            </Button>
-            <Button variant="ghost" onClick={onClose}>
-              Cancel
-            </Button>
+            <Button variant="outline" onClick={onClose}>Cancel</Button>
+            <Button colorScheme="blue" onClick={handleUpdate}>Save Changes</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Service Details Modal */}
+      <Modal isOpen={isDetailOpen} onClose={onDetailClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Service Details</ModalHeader>
+          <ModalBody>
+            <VStack spacing={4} align="stretch">
+              <Text fontWeight="bold">Name: {selectedService?.name}</Text>
+              <Text>Description: {selectedService?.description}</Text>
+            </VStack>
+          </ModalBody>
+          <ModalFooter>
+            <Button variant="outline" onClick={onDetailClose}>Close</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

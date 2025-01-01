@@ -4,5 +4,6 @@ export const API_ENDPOINTS = {
     REGISTER_VET: '/auth/register/vet',
     ZOO_SERVICE: '/services',
     HABITAT: '/habitats',
-    ANIMAL: '/animals'
+    ANIMAL: '/animals',
+    REPORT: '/vetreport'
   };

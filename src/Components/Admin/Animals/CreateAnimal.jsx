@@ -9,12 +9,14 @@ import * as Yup from 'yup';
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import animalService from '../../../Services/animalService';
 import habitatService from '../../../Services/habitatService'; // Assuming you have this service to fetch habitats
+import { useState } from 'react';
 
 const CreateAnimal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const queryClient = useQueryClient();
-  
+  const [file, setFile] = useState(null); // State for the image file
+
   // Fetch habitats when the component is mounted
   const { data: habitats = [], isLoading, isError } = useQuery({
     queryKey: ['habitats'],
@@ -39,25 +41,25 @@ const CreateAnimal = () => {
         duration: 5000,
         isClosable: true,
       });
-      queryClient.invalidateQueries({ queryKey: ['animalService'] });
+      queryClient.invalidateQueries({ queryKey: ['animals'] });  
       onClose();
     },
     onError: (error) => {
       toast({
         title: 'Error creating animal.',
-        description: error.message,
+        description: error.response?.data?.message || error.message,
         status: 'error',
         duration: 5000,
         isClosable: true,
       });
-      console.error('Error creating animal:', error);
+      console.error('Error creating animal:', error.response?.data || error.message);
     },
   });
 
   const initialValues = {
     name: '',
     race: '',
-    habitat: '', // ID of the habitat to be passed to backend
+    habitat: '',
   };
 
   const validationSchema = Yup.object({
@@ -66,24 +68,41 @@ const CreateAnimal = () => {
     habitat: Yup.string().required('Animal habitat is required'),
   });
 
-  const handleSubmit = (values, { setSubmitting, resetForm }) => {
-    createAnimalMutation.mutate(values);
-    setSubmitting(false);
-    resetForm();
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
   };
+
+  const handleSubmit = (values, { setSubmitting, resetForm }) => {
+    const formData = new FormData();
+    formData.append('name', values.name);
+    formData.append('race', values.race);
+    formData.append('habitat', values.habitat);
+    if (file) {
+      formData.append('image', file);
+    }
+
+    createAnimalMutation.mutate(formData, {
+      onSettled: () => {
+        setSubmitting(false);
+        resetForm();
+        setFile(null);
+      },
+    });
+  };
+
+  
 
   return (
     <>
-      <IconButton
+     
+        <IconButton
         icon={<AddIcon />}
-        aria-label="Add Animal"
-        bgGradient="linear(to-l, #ffcc99, #ff8c66)"
+        aria-label="Add Habitat"
+        colorScheme="teal"
         onClick={onOpen}
-        _hover={{
-          transform: 'scale(1.05)',
-          boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.2)',
-        }}
-        size="sm"
+        size="sm" // Small button
+        borderRadius="md"
+        boxShadow="sm"
       />
 
       <Modal isOpen={isOpen} onClose={onClose} size="xl" isCentered>
@@ -130,6 +149,15 @@ const CreateAnimal = () => {
                       </Field>
                       <ErrorMessage name="habitat" component={FormErrorMessage} />
                     </FormControl>
+
+                    <FormControl>
+                      <FormLabel>Image</FormLabel>
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                      />
+                    </FormControl>
                   </Grid>
 
                   <ModalFooter justifyContent="center" mt={6}>
@@ -137,14 +165,17 @@ const CreateAnimal = () => {
                       Cancel
                     </Button>
                     <Button
-                      bgGradient="linear(to-r, #663300, #cc6600)"
-                      _hover={{
-                        bgGradient: 'linear(to-r, #cc6600, #663300)',
-                        transform: 'scale(1.05)',
-                        boxShadow: 'lg',
-                      }}
+                      colorScheme="teal"
+                      borderRadius="md"
                       isLoading={isSubmitting}
                       type="submit"
+                      size="sm" // Small button
+                      width="auto"
+                      _hover={{
+                        bg: 'teal.600',
+                        transform: 'scale(1.05)',
+                        boxShadow: 'xl',
+                      }}
                     >
                       Create Animal
                     </Button>

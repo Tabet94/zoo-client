@@ -1,37 +1,53 @@
-import React from "react";
-import { Box, Heading, Text, Flex, useColorModeValue } from "@chakra-ui/react";
+import { Box, Flex, TabPanels, TabPanel, useColorModeValue, Tabs, Text } from '@chakra-ui/react';
+import { useState } from 'react';
 
-const  VetDashboard= () => {
-  const bgGradient = useColorModeValue(
-    "linear(to-br, teal.100, teal.200, teal.300)",
-    "linear(to-br, gray.800, gray.700, gray.600)"
-  );
-  const boxBg = useColorModeValue("white", "gray.700");
+
+import SidebarVet from '../Components/Vet/SidebarVet';
+
+
+
+import NavbarVet from '../Components/Vet/NavbarVet';
+import AnimalReport from '../Components/Vet/AnimalReport';
+
+
+
+
+const VetDashboard = () => {
+  const bg = useColorModeValue('#f9f9f9', '#1a202c');
+  const panelBg = useColorModeValue('#ffffff', '#4a5568');
+
+  // State to manage the active tab
+  const [activeTab, setActiveTab] = useState(0);
 
   return (
-    <Flex
-      align="center"
-      justify="center"
-      minH="100vh"
-      bgGradient={bgGradient}
-      px={4}
-    >
-      <Box
-        w={{ base: "100%", md: "600px" }}
-        p={8}
-        bg={boxBg}
-        borderRadius="lg"
-        boxShadow="lg"
-        textAlign="center"
-      >
-        <Heading color="teal.500" mb={4}>
-          Bienvenue, vet!
-        </Heading>
-        <Text fontSize="lg" color="gray.500">
-          Vous êtes connecté à votre tableau de bord. Gérez vos tâches et
-          explorez les fonctionnalités disponibles.
-        </Text>
-      </Box>
+    <Flex direction="column" minH="100vh" bg={bg}>
+     <NavbarVet/>
+      <Flex flex="1" direction={{ base: 'column', md: 'row' }} minH="calc(100vh - 60px)">
+        
+        {/* Sidebar with TabList */}
+        <SidebarVet activeTab={activeTab} setActiveTab={setActiveTab} />
+
+        {/* Main Content with TabPanels */}
+        <Box flex="1" px={8} py={6} bg={bg}>
+          <Tabs index={activeTab} onChange={setActiveTab} variant="soft-rounded" isFitted>
+            <TabPanels bg={panelBg} borderRadius="lg" boxShadow="xl" p={6}>
+              <TabPanel>
+               <AnimalReport />
+              </TabPanel>
+              <TabPanel>
+               
+              </TabPanel>
+              
+              <TabPanel>
+               
+              </TabPanel>
+              <TabPanel>
+              
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        </Box>
+      </Flex>
     </Flex>
   );
 };

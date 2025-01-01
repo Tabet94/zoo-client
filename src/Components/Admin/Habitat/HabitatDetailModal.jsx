@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Box, Text, Grid, Heading, Card, CardBody, Tab, TabList, TabPanel, TabPanels, Tabs, Spinner, Flex, Button, useBreakpointValue, Stack } from '@chakra-ui/react';
-import { FaDog, FaInfoCircle, FaEdit } from 'react-icons/fa';
+import { Box, Text, Grid, Heading, Card, CardBody, Tab, TabList, TabPanel, TabPanels, Tabs, Spinner, Flex, Button, useBreakpointValue, Stack, Image, Badge, IconButton, Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, ModalFooter } from '@chakra-ui/react';
+import { FaDog, FaEdit, FaTrashAlt, FaInfoCircle } from 'react-icons/fa';
 import habitatService from '../../../Services/habitatService';
 
 const HabitatDetails = ({ habitatId }) => {
@@ -14,6 +14,7 @@ const HabitatDetails = ({ habitatId }) => {
     },
   });
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const isMobile = useBreakpointValue({ base: true, md: false });
 
   // Loading state
@@ -43,64 +44,106 @@ const HabitatDetails = ({ habitatId }) => {
     );
   }
 
+  const handleModalClose = () => setIsModalOpen(false);
+
   return (
-    <Box maxW="7xl" mx="auto" p={6} borderRadius="lg" boxShadow="xl" bg="white">
-      <Flex justify="space-between" align="center" mb={6}>
-        <Heading size="lg" color="teal.600" fontWeight="bold">{data.name}</Heading>
-        <Button colorScheme="teal" leftIcon={<FaEdit />} size="sm">
+    <Box maxW="8xl" mx="auto" p={8} borderRadius="xl" boxShadow="2xl" bg="white">
+      {/* Title & Description */}
+      <Heading size="2xl" color="gray.900" mb={4} fontWeight="bold">{data.name}</Heading>
+      <Text fontSize="lg" color="gray.600" mb={6}>{data.description}</Text>
+
+      {/* Action Buttons */}
+      <Flex justify="flex-start" align="center" mb={6}>
+        <Button colorScheme="teal" leftIcon={<FaEdit />} onClick={() => setIsModalOpen(true)}>
           Edit Habitat
         </Button>
+        <IconButton
+          icon={<FaTrashAlt />}
+          colorScheme="red"
+          aria-label="Delete Habitat"
+          ml={4}
+        />
       </Flex>
 
-      <Text fontSize="lg" color="gray.600" mb={8}>{data.description}</Text>
-
-      {/* Tabs for Habitat Details */}
-      <Tabs isLazy colorScheme="teal" variant="soft-rounded" align="center">
-        <TabList>
-          <Tab fontWeight="bold" _selected={{ color: "white", bg: "teal.500" }} display="flex" alignItems="center">
-            <FaInfoCircle size={22} style={{ marginRight: 8 }} />
-            Habitat Info
-          </Tab>
-          <Tab fontWeight="bold" _selected={{ color: "white", bg: "teal.500" }} display="flex" alignItems="center">
-            <FaDog size={22} style={{ marginRight: 8 }} />
+      {/* Habitat Overview */}
+      <Tabs isLazy colorScheme="teal" variant="enclosed" align="start">
+        <TabList mb={6} borderBottom="2px solid #e2e8f0" display="flex" justifyContent="space-between">
+          <Tab
+            fontWeight="semibold"
+            _selected={{ color: "teal.600" }}
+            px={6}
+            py={3}
+            borderRadius="md"
+            display="flex"
+            alignItems="center"
+          >
+            <FaDog size={20} style={{ marginRight: 8 }} />
             Animals
           </Tab>
         </TabList>
 
-        <TabPanels mt={6}>
-          {/* Habitat Information Panel */}
+        <TabPanels>
           <TabPanel>
-            <Stack spacing={6}>
-              <Card borderRadius="lg" boxShadow="md" bg="teal.50" _hover={{ boxShadow: "xl" }} overflow="hidden">
-                <CardBody>
-                  <Heading size="md" color="teal.600" mb={4}>Habitat Overview</Heading>
-                  <Text fontSize="md" color="gray.700">{data.description}</Text>
-                </CardBody>
-              </Card>
-
-              {/* You can add more habitat-related info cards here */}
-            </Stack>
-          </TabPanel>
-
-          {/* Animals Panel */}
-          <TabPanel>
-            <Grid templateColumns={{ base: '1fr', sm: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }} gap={6}>
+            <Grid
+              templateColumns={{ base: '1fr', sm: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' }}
+              gap={8}
+              mt={6}
+            >
               {data.animals && data.animals.length > 0 ? (
                 data.animals.map((animal) => (
-                  <Card key={animal._id} borderRadius="lg" boxShadow="md" overflow="hidden" bg="gray.50" _hover={{ boxShadow: "lg" }}>
+                  <Card
+                    key={animal._id}
+                    borderRadius="md"
+                    boxShadow="lg"
+                    bg="white"
+                    _hover={{ boxShadow: '2xl', transform: 'scale(1.03)' }}
+                    transition="all 0.3s ease"
+                  >
                     <CardBody>
-                      <Heading size="sm" color="teal.600" mb={2}>{animal.name}</Heading>
-                      <Text fontSize="sm" color="gray.500">Race: {animal.race}</Text>
+                      <Flex direction="column" align="center" justify="center">
+                        <Image
+                          src={animal.imagesUrl[0]}
+                          alt={animal.name}
+                          boxSize="180px"
+                          objectFit="cover"
+                          borderRadius="full"
+                          mb={4}
+                          border="4px solid #e2e8f0"
+                        />
+                        <Heading size="md" color="gray.800" mb={2} textAlign="center">{animal.name}</Heading>
+                        <Text fontSize="sm" color="gray.500" textAlign="center">{animal.race}</Text>
+                      </Flex>
                     </CardBody>
                   </Card>
                 ))
               ) : (
-                <Text color="gray.500" fontSize="lg">No animals found for this habitat</Text>
+                <Text color="gray.500" fontSize="lg" textAlign="center" w="full">
+                  No animals found for this habitat.
+                </Text>
               )}
             </Grid>
           </TabPanel>
         </TabPanels>
       </Tabs>
+
+      {/* Edit Habitat Modal */}
+      <Modal isOpen={isModalOpen} onClose={handleModalClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Edit Habitat</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            {/* Modal content goes here */}
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3}>
+              Save Changes
+            </Button>
+            <Button variant="ghost" onClick={handleModalClose}>Cancel</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };

@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import {
   Box,
   Heading,
-  Grid,
-  Card,
-  CardBody,
   Text,
   IconButton,
   Button,
@@ -21,10 +18,10 @@ import {
   useToast,
   Spinner,
   HStack,
-  Badge,
   Flex,
+  Avatar,
 } from '@chakra-ui/react';
-import { EditIcon, DeleteIcon, AddIcon } from '@chakra-ui/icons';
+import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import animalService from '../../../Services/animalService';
 import CreateAnimal from './CreateAnimal';
@@ -32,11 +29,10 @@ import CreateAnimal from './CreateAnimal';
 const AnimalComponent = () => {
   const [selectedAnimal, setSelectedAnimal] = useState(null);
   const [updatedAnimalData, setUpdatedAnimalData] = useState({});
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isEditModalOpen, onOpen: onEditOpen, onClose: onEditClose } = useDisclosure();
   const toast = useToast();
   const queryClient = useQueryClient();
 
-  // Fetch animals using React Query
   const { data: animals = [], isLoading, isError } = useQuery({
     queryKey: ['animals'],
     queryFn: animalService.getAllAnimals,
@@ -50,8 +46,8 @@ const AnimalComponent = () => {
       });
     },
   });
+ 
 
-  // Mutations for deleting and updating animals
   const deleteAnimalMutation = useMutation({
     mutationFn: animalService.deleteAnimal,
     onSuccess: () => {
@@ -86,7 +82,7 @@ const AnimalComponent = () => {
         duration: 3000,
         isClosable: true,
       });
-      onClose();
+      onEditClose();
     },
     onError: (error) => {
       toast({
@@ -108,14 +104,13 @@ const AnimalComponent = () => {
   const handleEdit = (animal) => {
     setSelectedAnimal(animal);
     setUpdatedAnimalData(animal);
-    onOpen();
+    onEditOpen();
   };
 
   const handleUpdate = () => {
     updateAnimalMutation.mutate({ id: selectedAnimal._id, updatedData: updatedAnimalData });
   };
 
-  // Handle form changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUpdatedAnimalData({ ...updatedAnimalData, [name]: value });
@@ -128,33 +123,59 @@ const AnimalComponent = () => {
     <Box p={6} maxW="7xl" mx="auto" bg="gray.50" borderRadius="lg" boxShadow="xl">
       <Flex justifyContent="space-between" alignItems="center" mb={6}>
         <Heading size="lg" color="green.600">Manage Animals</Heading>
-        <CreateAnimal isOpen={isOpen} onClose={onClose} />
+        <CreateAnimal isOpen={isEditModalOpen} onClose={onEditClose} />
       </Flex>
 
-      {/* Animal Cards */}
-      <Grid templateColumns="repeat(auto-fill, minmax(250px, 1fr))" gap={6}>
+      <Box>
         {animals.map((animal) => (
-          <Card key={animal._id} boxShadow="md" borderRadius="lg" bg="white">
-            <CardBody>
-              <Heading size="md" color="green.600">{animal.name}</Heading>
-              <Text mt={2} fontSize="sm" color="gray.600">Race: {animal.race}</Text>
-              <Text mt={2} fontSize="sm" color="gray.600">Habitat: {animal.habitat ? animal.habitat.name : 'Unknown'}</Text>
-              <HStack mt={3} spacing={3}>
-                <Badge colorScheme="green">Active</Badge>
-                <HStack spacing={2}>
-                  <IconButton icon={<EditIcon />} colorScheme="blue" onClick={() => handleEdit(animal)} />
-                  <IconButton icon={<DeleteIcon />} colorScheme="red" onClick={() => handleDelete(animal._id)} />
-                </HStack>
-              </HStack>
-            </CardBody>
-          </Card>
-        ))}
-      </Grid>
+          <Box
+            key={animal._id}
+            bg="white"
+            borderRadius="md"
+            p={4}
+            mb={4}
+            boxShadow="md"
+            _hover={{
+              boxShadow: 'xl',
+              transform: 'scale(1.02)',
+              transition: 'all 0.3s ease-in-out',
+            }}
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Flex alignItems="center">
+              {/* Avatar Image */}
+              <Avatar name={animal.name} src={animal.imagesUrl[0]} size="lg" mr={4} />
+              <Box>
+                <Text fontSize="xl" fontWeight="bold" color="green.600">{animal.name}</Text>
+                <Text fontSize="sm" color="gray.500">Race: {animal.race}</Text>
+                <Text fontSize="sm" color="gray.500">Habitat: {animal.habitat ? animal.habitat.name : 'Unknown'}</Text>
+              </Box>
+            </Flex>
 
-      {/* Modal for editing/creating animal */}
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+            <HStack spacing={4}>
+              <IconButton
+                icon={<EditIcon />}
+                onClick={() => handleEdit(animal)}
+                aria-label="Edit animal"
+                colorScheme="blue"
+              />
+              <IconButton
+                icon={<DeleteIcon />}
+                onClick={() => handleDelete(animal._id)}
+                aria-label="Delete animal"
+                colorScheme="red"
+              />
+            </HStack>
+          </Box>
+        ))}
+      </Box>
+
+      {/* Modal for Editing Animal */}
+      <Modal isOpen={isEditModalOpen} onClose={onEditClose} isCentered>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent borderRadius="xl">
           <ModalHeader>{selectedAnimal ? 'Edit Animal' : 'Add Animal'}</ModalHeader>
           <ModalBody>
             <FormControl>
@@ -172,7 +193,7 @@ const AnimalComponent = () => {
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="green" onClick={handleUpdate}>Save</Button>
-            <Button variant="ghost" onClick={onClose}>Cancel</Button>
+            <Button variant="ghost" onClick={onEditClose}>Cancel</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

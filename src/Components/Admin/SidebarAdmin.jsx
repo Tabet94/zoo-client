@@ -1,11 +1,32 @@
-import { Box, VStack, Divider, Icon, Image, Button } from '@chakra-ui/react';
+import React, { useContext } from 'react';
+import {
+  Box,
+  VStack,
+  IconButton,
+  Icon,
+  Tooltip,
+  Avatar,
+  Text,
+  Divider,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import { AiOutlineUser, AiOutlineHome } from 'react-icons/ai';
 import { RiServiceLine } from 'react-icons/ri';
 import { FaPaw } from 'react-icons/fa';
-import Logo from '../../assets/logo.jpg';
+import { AuthContext } from '../../Context/AuthContext';
+import Logout from '../Logout';
 
 const Sidebar = ({ activeTab, setActiveTab }) => {
-  // Updated list of tab links
+  const { user } = useContext(AuthContext);
+
+  // Define colors based on the current color mode
+  const bgColor = useColorModeValue('gray.100', 'gray.900');
+  const activeBgColor = useColorModeValue('green.500', 'green.300');
+  const activeIconColor = useColorModeValue('white', 'gray.900');
+  const hoverBgColor = useColorModeValue('gray.200', 'gray.700');
+  const textColor = useColorModeValue('gray.700', 'gray.100');
+
+  // Navigation Links
   const TabLinks = [
     { label: 'Vet Register', icon: AiOutlineUser },
     { label: 'Services', icon: RiServiceLine },
@@ -15,46 +36,68 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
 
   return (
     <Box
-      bg="#ffffff"
-      w="240px"
-      p={4}
+      bg={bgColor}
+      w="80px"
       minH="100vh"
-      position="sticky"
-      top="0"
-      boxShadow="sm"
-      borderRight="1px solid #eaeaea"
+      p={4}
       display="flex"
       flexDirection="column"
+      alignItems="center"
       justifyContent="space-between"
+      boxShadow="lg"
     >
-      <VStack align="stretch" spacing={4} mt={4} color="black">
-        {TabLinks.map((tab, index) => (
-          <Button
-          key={tab.label}
-          onClick={() => setActiveTab(index)}
-          leftIcon={<Icon as={tab.icon} />}
-          variant="ghost"
-          justifyContent="flex-start"
+      {/* Top Section: User Info */}
+      <VStack spacing={6} align="center" w="full">
+        <Avatar
+          size="lg"
+          src="https://bit.ly/broken-link"
+          borderColor={activeBgColor}
+          borderWidth={2}
+        />
+        <Text
+          color={textColor}
           fontWeight="bold"
-          isActive={activeTab === index}
-          _active={{
-            bgGradient: "linear(to-r, #38a169, #68d391)", // Green gradient
-            color: "white" // Text color when active
-          }}
-          _hover={{ bg: "gray.100" }}
+          fontSize="sm"
+          textAlign="center"
+          noOfLines={1}
         >
-          {tab.label}
-        </Button>
-        
-        ))}
+          {user.name || 'Admin'}
+        </Text>
       </VStack>
 
-      {/* Footer with Logo */}
-      <Box mt={8} mb={4} alignContent="center">
-        <VStack>
-          <Divider borderColor="brand" borderWidth="1px" />
-          <Image src={Logo} alt="Logo" boxSize="150px" mx="auto" />
-        </VStack>
+      {/* Middle Section: Navigation */}
+      <VStack spacing={4} mt={8} align="center" w="full">
+  {TabLinks.map((tab, index) => (
+    <Tooltip label={tab.label} placement="right" key={tab.label}>
+      <IconButton
+        aria-label={tab.label}
+        icon={<Icon as={tab.icon} boxSize={5} />}
+        size="lg"
+        variant="ghost"
+        bg={activeTab === index ? activeBgColor : 'transparent'}
+        color={activeTab === index ? activeIconColor : 'gray.500'}
+        _hover={{ bg: hoverBgColor }}
+        onClick={() => setActiveTab(index)}
+        isActive={activeTab === index}
+        _active={{
+          boxShadow: "0 0 8px rgba(0, 0, 0, 0.5)", // Active state shadow
+          bg: "none", // No background color change
+          color: "inherit", // Retain the current color
+        }}
+        borderRadius="md"
+      />
+    </Tooltip>
+  ))}
+</VStack>
+
+
+      {/* Footer Section */}
+      <Box mt={8} w="full">
+      <Logout />
+        <Divider mb={4} />
+        <Text fontSize="0.7rem" color="gray.500" textAlign="center" >
+          Arcadia © 2025
+        </Text>
       </Box>
     </Box>
   );

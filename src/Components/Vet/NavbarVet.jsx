@@ -4,7 +4,7 @@ import { Box, Flex, Heading, Text, Spacer, Avatar, VStack, useColorModeValue } f
 import { AuthContext } from '../../Context/AuthContext';
 import Logo from '../../assets/logo.jpg';
 
-const NavbarAdmin = () => {
+const NavbarVet = () => {
   const { user } = useContext(AuthContext);
   const bgGradient = useColorModeValue(
     'linear(to-r, #94c973, #3b7a57)', // Green gradients for light mode
@@ -40,11 +40,11 @@ const NavbarAdmin = () => {
             src="https://bit.ly/broken-link"
             borderColor={logoBorderColor}
             borderWidth={2}
-            _hover={{ borderColor: '#ffa500' }} 
+            _hover={{ borderColor: '#ffa500' }} // Orange hover effect
             transition="border-color 0.3s ease"
           />
           <Text color={textColor} fontWeight="bold">
-            {user.name || 'Admin'}
+            {user.name || 'Vetirainaire'}
           </Text>
         </VStack>
       </Flex>
@@ -52,4 +52,4 @@ const NavbarAdmin = () => {
   );
 };
 
-export default NavbarAdmin;
+export default NavbarVet;

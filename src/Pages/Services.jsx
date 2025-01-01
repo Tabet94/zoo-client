@@ -8,41 +8,34 @@ import {
   Card,
   CardBody,
   VStack,
-  Icon,
-  Button,
+  Spinner,
+  useToast,
 } from "@chakra-ui/react";
-import { FaUtensils, FaTree, FaBusAlt, FaGift } from "react-icons/fa";
-import serviceheader from "../assets/service.jpg"
-
+import { useQuery } from "@tanstack/react-query";
+import zooService from "../Services/ZooService"; // Import your service
+import serviceheader from "../assets/service.jpg";
 
 const Services = () => {
-  const services = [
-    {
-      title: "Restaurant & Cafétéria",
-      description: "Savourez de délicieux repas et rafraîchissements.",
-      icon: FaUtensils,
+  const toast = useToast();
+
+  // Fetch services using React Query
+  const { data: services = [], isLoading, isError } = useQuery({
+    queryKey: ["services"],
+    queryFn: zooService.getAllServices,
+    onError: (error) => {
+      toast({
+        title: "Error fetching services",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     },
-    {
-      title: "Visites Guidées",
-      description: "Explorez le zoo avec des guides experts.",
-      icon: FaTree,
-    },
-    {
-      title: "Service de Navette",
-      description: "Transport pratique à l'intérieur du zoo.",
-      icon: FaBusAlt,
-    },
-    {
-      title: "Boutique de Cadeaux",
-      description: "Ramenez des souvenirs et des cadeaux.",
-      icon: FaGift,
-    },
-  ];
+  });
 
   return (
     <Box mt="5rem">
-      {/* Section En-tête */}
-    
+      {/* Section Header */}
       <Box
         bgImage={`url(${serviceheader})`}
         bgSize="cover"
@@ -71,49 +64,59 @@ const Services = () => {
       </Box>
 
       {/* Section Services */}
-      <Box py={10} px={5} mb="5rem" mt='5rem'>
+      <Box py={10} px={5} mb="5rem" mt="5rem">
         <Heading textAlign="center" mb={8} fontSize="3xl" color="teal.600">
           Nos Services
         </Heading>
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={6}>
-          {services.map((service, index) => (
-            <Card
-              key={index}
-              shadow="md"
-              borderRadius="md"
-              bg="white"
-              _hover={{
-                shadow: "lg",
-                transform: "scale(1.05)",
-                transition: "0.3s",
-              }}
-            >
-              <CardBody>
-                <VStack spacing={4}>
-                  <Box
-                    bg="teal.500"
-                    color="white"
-                    w={16}
-                    h={16}
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    borderRadius="full"
-                  >
-                    <Icon as={service.icon} boxSize={8} />
-                  </Box>
-                  <Heading fontSize="xl" textAlign="center" color="teal.700">
-                    {service.title}
-                  </Heading>
-                  <Text fontSize="sm" textAlign="center" color="gray.600">
-                    {service.description}
-                  </Text>
-                </VStack>
-              </CardBody>
-            </Card>
-          ))}
-        </SimpleGrid>
-       
+
+        {isLoading ? (
+          <Spinner size="xl" color="green.500" display="block" mx="auto" my={6} />
+        ) : isError ? (
+          <Text color="red.500" fontSize="lg" textAlign="center">
+            Error loading services
+          </Text>
+        ) : (
+          <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={6}>
+            {services.map((service) => (
+              <Card
+                key={service._id}
+                shadow="md"
+                borderRadius="md"
+                bg="white"
+                _hover={{
+                  shadow: "lg",
+                  transform: "scale(1.05)",
+                  transition: "0.3s",
+                }}
+              >
+                <CardBody>
+                  <VStack spacing={4}>
+                    <Box
+                      bgGradient="linear(to-r, teal.400, teal.600)"
+                      color="white"
+                      w={16}
+                      h={16}
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      borderRadius="full"
+                      fontSize="2xl"
+                      shadow="md"
+                    >
+                      ⭐
+                    </Box>
+                    <Heading fontSize="xl" textAlign="center" color="teal.700">
+                      {service.name}
+                    </Heading>
+                    <Text fontSize="sm" textAlign="center" color="gray.600">
+                      {service.description}
+                    </Text>
+                  </VStack>
+                </CardBody>
+              </Card>
+            ))}
+          </SimpleGrid>
+        )}
       </Box>
     </Box>
   );
