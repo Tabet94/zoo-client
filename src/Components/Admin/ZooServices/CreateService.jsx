@@ -41,12 +41,14 @@ const CreateService = () => {
   const initialValues = {
     name: '',
     description: '',
-    image: null,
+   
+    
   };
 
   const validationSchema = Yup.object({
     name: Yup.string().required('Service name is required'),
     description: Yup.string().required('Description is required'),
+   
   });
 
   const handleSubmit = (values, { setSubmitting, resetForm }) => {

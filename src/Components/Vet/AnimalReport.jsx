@@ -46,7 +46,18 @@ const AnimalReport = () => {
     date: '',
     details: '',
   });
-  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const {
+    isOpen: isAddReportOpen,
+    onOpen: onAddReportOpen,
+    onClose: onAddReportClose,
+  } = useDisclosure();
+  const {
+    isOpen: isDetailsOpen,
+    onOpen: onDetailsOpen,
+    onClose: onDetailsClose,
+  } = useDisclosure();
+
   const toast = useToast();
   const queryClient = useQueryClient();
 
@@ -67,7 +78,7 @@ const AnimalReport = () => {
     onSuccess: () => {
       toast({ title: 'Vet report created successfully', status: 'success', duration: 3000 });
       refetchReports();
-      onClose();
+      onAddReportClose();
       setReportData({
         state: '',
         food: '',
@@ -93,7 +104,7 @@ const AnimalReport = () => {
       <Heading size="xl" color="teal.600" mb={8} textAlign="center" fontWeight="bold">Animal Management Dashboard</Heading>
 
       {/* Animal Data Grid Table */}
-      <Table  mb={6}>
+      <Table mb={6}>
         <Thead>
           <Tr>
             <Th>Name</Th>
@@ -107,13 +118,12 @@ const AnimalReport = () => {
             <Tr key={animal._id}>
               <Td>
                 <Flex alignItems="center">
-                  <Avatar name={animal.name} src={animal.image || ''} size="sm" mr={4} />
+                  <Avatar name={animal.name} src={animal.imagesUrl[0]} size="sm" mr={4} />
                   {animal.name}
                 </Flex>
               </Td>
               <Td>{animal.race}</Td>
               <Td>{animal.habitat?.name || 'Unknown'}</Td>
-             
               <Td>
                 <Button
                   size="sm"
@@ -121,11 +131,23 @@ const AnimalReport = () => {
                   variant="outline"
                   onClick={() => {
                     setSelectedAnimal(animal._id);
-                    refetchReports();
-                    onOpen();
+                    onAddReportOpen();
                   }}
                 >
                   Add Report
+                </Button>
+                <Button
+                  size="sm"
+                  colorScheme="teal"
+                  variant="outline"
+                  onClick={() => {
+                    setSelectedAnimal(animal._id);
+                    refetchReports();
+                    onDetailsOpen();
+                  }}
+                  ml={2}
+                >
+                  View Details
                 </Button>
               </Td>
             </Tr>
@@ -133,34 +155,18 @@ const AnimalReport = () => {
         </Tbody>
       </Table>
 
-      {/* Modal for Viewing and Adding Vet Reports */}
-      <Modal isOpen={isOpen} onClose={onClose} size="xl">
+      {/* Add Vet Report Modal */}
+      <Modal isOpen={isAddReportOpen} onClose={onAddReportClose} size="xl">
         <ModalOverlay />
-        <ModalContent borderRadius="lg" boxShadow="xl">
-          <ModalHeader bg="teal.600" color="white" borderTopRadius="lg" fontWeight="bold">Vet Reports</ModalHeader>
-          <ModalBody bg="gray.50" p={6}>
-            {reportsLoading ? (
-              <Spinner size="xl" color="teal.500" display="block" mx="auto" my={6} />
-            ) : (
-              vetReports.map((report, index) => (
-                <Box key={index} p={4} bg="white" borderRadius="md" boxShadow="md" mb={4}>
-                  <Text fontSize="md" color="teal.700"><strong>State:</strong> {report.state}</Text>
-                  <Text fontSize="md" color="teal.700"><strong>Food:</strong> {report.food}</Text>
-                  <Text fontSize="md" color="teal.700"><strong>Quantity:</strong> {report.quantity}</Text>
-                  <Text fontSize="md" color="teal.700"><strong>Date:</strong> {new Date(report.date).toLocaleDateString()}</Text>
-                  <Text fontSize="md" color="teal.700"><strong>Details:</strong> {report.details}</Text>
-                </Box>
-              ))
-            )}
-            <Divider my={6} />
-            <Heading size="md" color="teal.700" mb={4}>Add a New Vet Report</Heading>
+        <ModalContent>
+          <ModalHeader>Add Vet Report</ModalHeader>
+          <ModalBody>
             <FormControl mb={4}>
               <FormLabel>State</FormLabel>
               <Input
                 placeholder="State"
                 value={reportData.state}
                 onChange={(e) => setReportData({ ...reportData, state: e.target.value })}
-                borderRadius="md"
               />
             </FormControl>
             <FormControl mb={4}>
@@ -169,7 +175,6 @@ const AnimalReport = () => {
                 placeholder="Food"
                 value={reportData.food}
                 onChange={(e) => setReportData({ ...reportData, food: e.target.value })}
-                borderRadius="md"
               />
             </FormControl>
             <FormControl mb={4}>
@@ -177,7 +182,6 @@ const AnimalReport = () => {
               <NumberInput
                 value={reportData.quantity}
                 onChange={(value) => setReportData({ ...reportData, quantity: value })}
-                borderRadius="md"
               >
                 <NumberInputField />
                 <NumberInputStepper>
@@ -192,7 +196,6 @@ const AnimalReport = () => {
                 type="date"
                 value={reportData.date}
                 onChange={(e) => setReportData({ ...reportData, date: e.target.value })}
-                borderRadius="md"
               />
             </FormControl>
             <FormControl mb={4}>
@@ -201,20 +204,75 @@ const AnimalReport = () => {
                 placeholder="Enter details"
                 value={reportData.details}
                 onChange={(e) => setReportData({ ...reportData, details: e.target.value })}
-                borderRadius="md"
               />
             </FormControl>
           </ModalBody>
-          <ModalFooter bg="gray.100" p={4}>
-            <Button colorScheme="teal" onClick={handleCreateReport} isLoading={createVetReportMutation.isLoading} borderRadius="md">
+          <ModalFooter>
+            <Button colorScheme="teal" onClick={handleCreateReport} isLoading={createVetReportMutation.isLoading}>
               Submit
             </Button>
-            <Button variant="outline" onClick={onClose} ml={3} borderRadius="md">
+            <Button variant="outline" onClick={onAddReportClose} ml={3}>
               Close
             </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
+
+      {/* View Vet Report Details Modal */}
+      <Modal isOpen={isDetailsOpen} onClose={onDetailsClose} size="xl">
+  <ModalOverlay />
+  <ModalContent>
+    <ModalHeader>Vet Reports</ModalHeader>
+    <ModalBody>
+      {reportsLoading ? (
+        <Spinner size="xl" color="teal.500" display="block" mx="auto" my={6} />
+      ) : (
+        vetReports.map((report, index) => (
+          <Box
+            key={index}
+            p={6}
+            bg="white"
+            borderRadius="lg"
+            boxShadow="lg"
+            mb={4}
+            border="1px solid #e2e8f0"
+            _hover={{ boxShadow: 'xl', borderColor: 'teal.500' }}
+            transition="all 0.2s"
+          >
+            <Flex direction="column" gap={3}>
+              <Text fontSize="lg" fontWeight="bold" color="teal.600">
+                Report #{index + 1}
+              </Text>
+              <Box borderBottom="1px" borderColor="gray.200" mb={4} />
+
+              <Text fontSize="md" fontWeight="semibold" color="gray.700">
+                <strong>State:</strong> {report.state}
+              </Text>
+              <Text fontSize="md" fontWeight="semibold" color="gray.700">
+                <strong>Food:</strong> {report.food}
+              </Text>
+              <Text fontSize="md" fontWeight="semibold" color="gray.700">
+                <strong>Quantity:</strong> {report.quantity}
+              </Text>
+              <Text fontSize="md" fontWeight="semibold" color="gray.700">
+                <strong>Date:</strong> {new Date(report.date).toLocaleDateString()}
+              </Text>
+              <Text fontSize="md" fontWeight="semibold" color="gray.700">
+                <strong>Details:</strong> {report.details}
+              </Text>
+            </Flex>
+          </Box>
+        ))
+      )}
+    </ModalBody>
+    <ModalFooter>
+      <Button variant="outline" onClick={onDetailsClose}>
+        Close
+      </Button>
+    </ModalFooter>
+  </ModalContent>
+</Modal>
+
     </Box>
   );
 };

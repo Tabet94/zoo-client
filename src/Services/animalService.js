@@ -6,7 +6,7 @@ const animalService = {
   createAnimal: async (animalData) => {
     try {
       const response = await api.post(API_ENDPOINTS.ANIMAL, animalData);
-      return response.data; // Return the created animal data
+      return response.data; 
     } catch (error) {
       console.error("Error creating animal:", error);
       throw error.response?.data?.message || "Failed to create animal";
@@ -17,7 +17,7 @@ const animalService = {
   getAllAnimals: async () => {
     try {
       const response = await api.get(API_ENDPOINTS.ANIMAL);
-      return response; // Return the list of all animals
+      return response; 
     } catch (error) {
       console.error("Error fetching animals:", error);
       throw error.response?.data?.message || "Failed to fetch animals";
@@ -28,7 +28,9 @@ const animalService = {
   getAnimalById: async (id) => {
     try {
       const response = await api.get(`${API_ENDPOINTS.ANIMAL}/${id}`);
-      return response; // Return the specific animal data
+      console.log('API Response:', response);
+      return response; 
+      
     } catch (error) {
       console.error("Error fetching animal by ID:", error);
       throw error.response?.data?.message || "Failed to fetch animal";
