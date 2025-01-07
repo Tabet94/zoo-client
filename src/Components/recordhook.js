@@ -1,11 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 
+
+
 const useFetchById = (fetchFn, id) => {
   return useQuery({
-    queryKey: ['reports', id], // Unique key for the query
+    queryKey: ['foodRecords', id], // Unique key for the query
     queryFn: () => fetchFn(id),
     enabled: !!id, // Ensures the query only runs if `id` is valid
   });
 };
-export default useFetchById
 
+export default useFetchById;

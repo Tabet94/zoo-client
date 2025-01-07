@@ -6,7 +6,7 @@ import SidebarVet from '../Components/Vet/SidebarVet';
 
 
 
-import NavbarVet from '../Components/Vet/NavbarVet';
+
 import AnimalReport from '../Components/Vet/AnimalReport';
 
 
@@ -21,7 +21,7 @@ const VetDashboard = () => {
 
   return (
     <Flex direction="column" minH="100vh" bg={bg}>
-     <NavbarVet/>
+    
       <Flex flex="1" direction={{ base: 'column', md: 'row' }} minH="calc(100vh - 60px)">
         
         {/* Sidebar with TabList */}

@@ -31,10 +31,10 @@ import {
 } from '@chakra-ui/react';
 import { DeleteIcon, EditIcon, AddIcon, InfoIcon } from '@chakra-ui/icons';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import zooService from '../../../Services/ZooService';
-import CreateService from './CreateService';
+import zooService from '../../Services/zooService'
 
-const ListService = () => {
+
+const ZooService = () => {
   const [selectedService, setSelectedService] = useState(null);
   const [updatedServiceData, setUpdatedServiceData] = useState({});
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -56,28 +56,7 @@ const ListService = () => {
     },
   });
 
-  const deleteServiceMutation = useMutation({
-    mutationFn: zooService.deleteService,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['services'] });
-      toast({
-        title: 'Service deleted',
-        description: 'The service was successfully deleted.',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-      });
-    },
-    onError: (error) => {
-      toast({
-        title: 'Error deleting service',
-        description: error.message,
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      });
-    },
-  });
+  
 
   const updateServiceMutation = useMutation({
     mutationFn: ({ id, updatedData }) => zooService.updateService(id, updatedData),
@@ -103,11 +82,7 @@ const ListService = () => {
     },
   });
 
-  const handleDelete = (id) => {
-    if (window.confirm('Are you sure you want to delete this service?')) {
-      deleteServiceMutation.mutate(id);
-    }
-  };
+
 
   const handleEdit = (service) => {
     setSelectedService(service);
@@ -133,7 +108,7 @@ const ListService = () => {
         <Heading size="lg" color="gray.800" fontWeight="bold">
           Manage Zoo Services
         </Heading>
-        <CreateService isOpen={isOpen} onClose={onClose} />
+       
       </Flex>
 
       <TableContainer bg="white" borderRadius="lg" boxShadow="lg">
@@ -163,15 +138,7 @@ const ListService = () => {
                         size="sm"
                       />
                     </Tooltip>
-                    <Tooltip label="Delete Service" placement="top">
-                      <IconButton
-                        icon={<DeleteIcon />}
-                        colorScheme="red"
-                        aria-label="Delete Service"
-                        onClick={() => handleDelete(service._id)}
-                        size="sm"
-                      />
-                    </Tooltip>
+                   
                     <Tooltip label="Service Details" placement="top">
                       <IconButton
                         icon={<InfoIcon />}
@@ -239,4 +206,4 @@ const ListService = () => {
   );
 };
 
-export default ListService;
+export default ZooService;

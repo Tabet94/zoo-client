@@ -5,5 +5,6 @@ export const API_ENDPOINTS = {
     ZOO_SERVICE: '/services',
     HABITAT: '/habitats',
     ANIMAL: '/animals',
-    REPORT: '/vetreport'
+    REPORT: '/vetreport',
+    RECORD: '/foodrecord'
   };

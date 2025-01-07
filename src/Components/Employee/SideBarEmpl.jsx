@@ -17,7 +17,7 @@ import { FaPaw } from 'react-icons/fa';
 import { AuthContext } from '../../Context/AuthContext';
 import Logout from '../Logout';
 
-const Sidebar = ({ activeTab, setActiveTab }) => {
+const SidebarEmpl = ({ activeTab, setActiveTab }) => {
   const { user } = useContext(AuthContext);
 
   // Define colors based on the current color mode
@@ -29,10 +29,9 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
 
   // Navigation Links
   const TabLinks = [
-    { label: 'Vet Register', icon: AiOutlineUser },
     { label: 'Services', icon: RiServiceLine },
     { label: 'Animals', icon: FaPaw },
-    { label: 'Habitat', icon: AiOutlineHome },
+
   ];
 
   // Determine the layout for smaller screens
@@ -66,7 +65,7 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
             textAlign="center"
             noOfLines={1}
           >
-            {user.name || 'Admin'}
+            {user.name || 'Employee'}
           </Text>
         </VStack>
       )}
@@ -116,4 +115,4 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
   );
 };
 
-export default Sidebar;
+export default SidebarEmpl;

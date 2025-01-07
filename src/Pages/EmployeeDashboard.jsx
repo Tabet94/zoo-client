@@ -1,37 +1,60 @@
-import React from "react";
-import { Box, Heading, Text, Flex, useColorModeValue } from "@chakra-ui/react";
+import { Box, Flex, TabPanels, TabPanel, useColorModeValue, Tabs } from '@chakra-ui/react';
+import { useState } from 'react';
 
+import Sidebar from '../Components/Admin/SidebarAdmin';
+import RegisterVet from '../Components/Admin/RegisterVet';
+
+import ListServices from '../Components/Admin/ZooServices/ListServices';
+import Animals from '../Components/Admin/Animals/ListAnimals';
+import ListHabitat from '../Components/Admin/Habitat/ListHabitats';
+import ZooService from '../Components/Employee/ZooService';
+import AnimalFoodRecords from '../Components/Employee/AnimalFoodRecords'
+import SidebarEmpl from '../Components/Employee/SideBarEmpl';
 const EmployeeDashboard = () => {
-  const bgGradient = useColorModeValue(
-    "linear(to-br, teal.100, teal.200, teal.300)",
-    "linear(to-br, gray.800, gray.700, gray.600)"
-  );
-  const boxBg = useColorModeValue("white", "gray.700");
+  const bg = useColorModeValue('#f9f9f9', '#1a202c');
+  const panelBg = useColorModeValue('#ffffff', '#4a5568');
+
+  // State to manage the active tab
+  const [activeTab, setActiveTab] = useState(0);
 
   return (
-    <Flex
-      align="center"
-      justify="center"
-      minH="100vh"
-      bgGradient={bgGradient}
-      px={4}
-    >
-      <Box
-        w={{ base: "100%", md: "600px" }}
-        p={8}
-        bg={boxBg}
-        borderRadius="lg"
-        boxShadow="lg"
-        textAlign="center"
+    <Flex direction="column" minH="100vh" bg={bg}>
+      <Flex
+        flex="1"
+        direction={{ base: 'column', md: 'row' }}
+        minH="calc(100vh - 60px)"
+        overflowY="auto"
       >
-        <Heading color="teal.500" mb={4}>
-          Bienvenue, employee!
-        </Heading>
-        <Text fontSize="lg" color="gray.500">
-          Vous êtes connecté à votre tableau de bord. Gérez vos tâches et
-          explorez les fonctionnalités disponibles.
-        </Text>
-      </Box>
+        {/* Sidebar with TabList */}
+        <SidebarEmpl activeTab={activeTab} setActiveTab={setActiveTab} />
+
+        {/* Main Content with TabPanels */}
+        <Box
+          flex="1"
+          px={{ base: 4, md: 8 }}
+          py={{ base: 4, md: 6 }}
+          bg={bg}
+          overflowY="auto"
+        >
+          <Tabs
+            index={activeTab}
+            onChange={setActiveTab}
+            variant="soft-rounded"
+            isFitted
+          >
+            <TabPanels bg={panelBg} p={{ base: 4, md: 6 }} borderRadius="md" boxShadow="sm">
+              
+              <TabPanel>
+                <ZooService />
+              </TabPanel>
+              <TabPanel>
+                <AnimalFoodRecords />
+              </TabPanel>
+           
+            </TabPanels>
+          </Tabs>
+        </Box>
+      </Flex>
     </Flex>
   );
 };

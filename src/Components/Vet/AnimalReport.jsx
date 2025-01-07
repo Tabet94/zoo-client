@@ -31,7 +31,9 @@ import {
   Divider,
   Avatar,
   Flex,
+  IconButton
 } from '@chakra-ui/react';
+import {  ViewIcon, AddIcon } from '@chakra-ui/icons';
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import animalService from '../../Services/animalService';
 import reportService from '../../Services/reportService';
@@ -100,7 +102,7 @@ const AnimalReport = () => {
   if (isError) return <Text color="red.500" fontSize="lg" textAlign="center">Error loading animals</Text>;
 
   return (
-    <Box p={8} maxW="8xl" mx="auto" bg="gray.50" borderRadius="lg" boxShadow="xl">
+    <Box p={8} maxW="8xl" mx="auto" bg="gray.50" >
       <Heading size="xl" color="teal.600" mb={8} textAlign="center" fontWeight="bold">Animal Management Dashboard</Heading>
 
       {/* Animal Data Grid Table */}
@@ -125,31 +127,42 @@ const AnimalReport = () => {
               <Td>{animal.race}</Td>
               <Td>{animal.habitat?.name || 'Unknown'}</Td>
               <Td>
-                <Button
-                  size="sm"
-                  colorScheme="teal"
-                  variant="outline"
-                  onClick={() => {
-                    setSelectedAnimal(animal._id);
-                    onAddReportOpen();
-                  }}
-                >
-                  Add Report
-                </Button>
-                <Button
-                  size="sm"
-                  colorScheme="teal"
-                  variant="outline"
-                  onClick={() => {
-                    setSelectedAnimal(animal._id);
-                    refetchReports();
-                    onDetailsOpen();
-                  }}
-                  ml={2}
-                >
-                  View Details
-                </Button>
-              </Td>
+  <Flex gap={2}>
+  <IconButton
+  icon={<AddIcon />} // Replace this with the appropriate icon for "Add Report"
+  onClick={() => {
+    setSelectedAnimal(animal._id);
+    onAddReportOpen();
+  }}
+  aria-label="Add Report"
+  variant="outline"
+  color="black"
+  borderColor="black"
+  _hover={{ bg: "black", color: "white" }}
+  _active={{ bg: "blackAlpha.800" }}
+  size="sm"
+  mx={1}
+/>
+<IconButton
+  icon={<ViewIcon />}
+  onClick={() => {
+    setSelectedAnimal(animal._id);
+    refetchReports();
+    onDetailsOpen();
+  }}
+  aria-label="View animal details"
+  variant="outline"
+  color="black"
+  borderColor="black"
+  _hover={{ bg: "black", color: "white" }}
+  _active={{ bg: "blackAlpha.800" }}
+  size="sm"
+  mx={1}
+/>
+
+  </Flex>
+</Td>
+
             </Tr>
           ))}
         </Tbody>

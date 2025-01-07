@@ -16,59 +16,27 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import HabitatDetail from "../Components/Client/HabitatDetail"; 
-
-const habitats = [
-  {
-    id: 1,
-    name: "Savane Africaine",
-    images: ["/images/savane.jpg"],
-    description:
-      "La savane africaine abrite une faune variée, dont des lions, éléphants, et antilopes.",
-    animals: [
-      {
-        id: 1,
-        name: "Simba",
-        species: "Lion",
-        images: ["/images/lion.jpg"],
-        vetInfo: [
-          {
-            state: "En bonne santé",
-            food: "Viande",
-            foodWeight: "5 kg",
-            visitDate: "2024-12-01",
-            details: "Énergique et actif.",
-          },
-        ],
-      },
-      {
-        id: 2,
-        name: "Dumbo",
-        species: "Éléphant",
-        images: ["/images/elephant.jpg"],
-        vetInfo: [
-          {
-            state: "Fatigué",
-            food: "Herbe",
-            foodWeight: "50 kg",
-            visitDate: "2024-12-03",
-            details: "Besoin de repos.",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: "Forêt Tropicale",
-    images: ["/images/foret.jpg"],
-    description: "Un habitat luxuriant qui abrite des singes, oiseaux tropicaux et reptiles.",
-    animals: [],
-  },
-];
+import habitatService from "../Services/habitatService";
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const Habitat = () => {
   const [selectedHabitat, setSelectedHabitat] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const queryClient = useQueryClient();
+  const { data: habitats = [], isLoading, isError } = useQuery({
+    queryKey: ['habitats'],
+    queryFn: () => habitatService.getAllHabitats(),
+    onError: (error) => {
+      toast({
+        title: 'Error fetching habitats',
+        description: error.message,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    },
+  });
+
 
   const handleHabitatClick = (habitat) => {
     setSelectedHabitat(habitat);
@@ -92,7 +60,7 @@ const Habitat = () => {
               onClick={() => handleHabitatClick(habitat)}
               _hover={{ transform: "scale(1.05)", transition: "all 0.3s" }}
             >
-              <Image src={habitat.images[0]} alt={habitat.name} h="200px" w="full" />
+              <Image  src={habitat.imagesUrl[0]} alt={habitat.name} h="200px" w="full" />
               <Text p={4} fontWeight="bold" textAlign="center">
                 {habitat.name}
               </Text>
@@ -104,12 +72,15 @@ const Habitat = () => {
       {/* Modal pour afficher les détails d'un habitat */}
       <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>{selectedHabitat?.name}</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            {selectedHabitat && <HabitatDetail habitat={selectedHabitat} />}
-          </ModalBody>
+        <ModalContent maxWidth="90%" px={10} py={8}>
+    <ModalHeader fontSize="2xl" fontWeight="bold">Habitat Details</ModalHeader>
+    <ModalBody fontSize="lg">
+      {selectedHabitat ? (
+        <HabitatDetail habitatId={selectedHabitat._id} />
+      ) : (
+        <Text>No habitat selected</Text>
+      )}
+    </ModalBody>
         </ModalContent>
       </Modal>
     </Box>

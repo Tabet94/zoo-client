@@ -20,8 +20,15 @@ import {
   HStack,
   Flex,
   Avatar,
+  Grid,
+  Table,
+  Thead,
+  Tr,
+  Th,
+  Tbody,
+  Td,
 } from '@chakra-ui/react';
-import { EditIcon, DeleteIcon, ViewIcon } from '@chakra-ui/icons';
+import { EditIcon, DeleteIcon, InfoIcon } from '@chakra-ui/icons';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import animalService from '../../../Services/animalService';
 import CreateAnimal from './CreateAnimal';
@@ -175,88 +182,146 @@ const AnimalComponent = () => {
                 onClick={() => handleEdit(animal)}
                 aria-label="Edit animal"
                 colorScheme="blue"
+                size="sm"
               />
               <IconButton
                 icon={<DeleteIcon />}
                 onClick={() => handleDelete(animal._id)}
                 aria-label="Delete animal"
                 colorScheme="red"
+                size="sm"
               />
               <IconButton
-                icon={<ViewIcon />}
+                icon={<InfoIcon />}
                 onClick={() => handleViewDetails(animal._id)}
                 aria-label="View animal details"
-                colorScheme="green"
+                colorScheme="purple"
+                size="sm"
               />
             </HStack>
           </Box>
         ))}
       </Box>
-
-      {/* Modal for Viewing Animal Details */}
-      <Modal isOpen={isDetailsModalOpen} onClose={onDetailsClose} isCentered size="lg">
+      <Modal isOpen={isDetailsModalOpen} onClose={onDetailsClose} isCentered size="6xl">
   <ModalOverlay />
-  <ModalContent borderRadius="lg" maxW="4xl" p={6} bg="white" boxShadow="lg">
-    <ModalHeader>
-      <Text fontSize="2xl" fontWeight="bold" color="green.600">Animal Details</Text>
-    </ModalHeader>
-    <ModalBody>
-      <Flex direction="column" gap={4}>
-        {/* Animal Basic Information */}
-        <Box p={4} bg="gray.50" borderRadius="lg" boxShadow="md">
-          <Heading size="md" color="green.600">Basic Info</Heading>
-          <Text fontSize="lg" color="gray.600"><strong>Name:</strong> {selectedAnimal?.name}</Text>
-          <Text fontSize="lg" color="gray.600"><strong>Race:</strong> {selectedAnimal?.race}</Text>
-          <Text fontSize="lg" color="gray.600"><strong>Habitat:</strong> {selectedAnimal?.habitat?.name || 'Unknown'}</Text>
-        </Box>
-
-        {/* Vet Report Section */}
-        {selectedAnimal?.vetReports?.length > 0 ? (
-  selectedAnimal.vetReports.map((report, index) => (
-    <Box
-      key={index}
-      p={4}
-      bg="gray.50"
-      borderRadius="lg"
-      boxShadow="md"
-      mb={4} // Adds spacing between each report
-    >
-      <Heading size="md" color="green.600">
-        Vet Report #{index + 1}
-      </Heading>
-      <Text fontSize="lg" color="gray.600">
-        <strong>Details:</strong> {report.details || 'No report available'}
-      </Text>
-      <Text fontSize="lg" color="gray.600">
-        <strong>Date:</strong> {new Date(report.date).toLocaleDateString() || 'N/A'}
-      </Text>
-      <Text fontSize="lg" color="gray.600">
-        <strong>Food:</strong> {report.food || 'Not specified'}
-      </Text>
-      <Text fontSize="lg" color="gray.600">
-        <strong>Quantity:</strong> {report.quantity || 'Not specified'}
-      </Text>
-      <Text fontSize="lg" color="gray.600">
-        <strong>State:</strong> {report.state || 'Not specified'}
-      </Text>
-    </Box>
-  ))
-) : (
-  <Box p={4} bg="gray.50" borderRadius="lg" boxShadow="md">
-    <Text fontSize="lg" color="gray.600">No vet reports available.</Text>
-  </Box>
-)}
-
-
-        {/* Additional Information - Add more sections as needed */}
-        <Box p={4} bg="gray.50" borderRadius="lg" boxShadow="md">
-          <Heading size="md" color="green.600">Other Details</Heading>
-          {/* You can add other details like age, gender, etc. */}
-        </Box>
+  <ModalContent borderRadius="lg" maxW="6xl" p={0} bg="white" boxShadow="2xl">
+    <ModalHeader borderBottomWidth="1px" p={6}>
+      <Flex justifyContent="space-between" alignItems="center">
+        <Text fontSize="2xl" fontWeight="bold" color="gray.800">
+          Animal Details
+        </Text>
+        <Button variant="ghost" onClick={onDetailsClose} colorScheme="gray">
+          Close
+        </Button>
       </Flex>
+    </ModalHeader>
+
+    <ModalBody p={6} maxH="70vh" overflowY="auto">
+      <Grid templateColumns="repeat(2, 1fr)" gap={6}>
+        {/* Basic Information Section */}
+        <Box  p={6} >
+          <Flex alignItems="center" mb={4}>
+           
+          </Flex>
+          <Flex alignItems="center" mb={4}>
+          <Avatar  src={selectedAnimal?.imagesUrl[0]} size="lg" mr={4} />
+          </Flex>
+          <Text fontSize="lg" color="gray.700">
+            <strong>Name:</strong> {selectedAnimal?.name || 'Unknown'}
+          </Text>
+          <Text fontSize="lg" color="gray.700">
+            <strong>Race:</strong> {selectedAnimal?.race || 'Unknown'}
+          </Text>
+          <Text fontSize="lg" color="gray.700">
+            <strong>Habitat:</strong> {selectedAnimal?.habitat?.name || 'Unknown'}
+          </Text>
+        </Box>
+
+      
+
+        {/* Vet Reports Section */}
+        <Box gridColumn="span 2" bg="white" p={6} borderRadius="lg" boxShadow="md">
+          <Flex alignItems="center" mb={4}>
+            <Box as="span" color="purple.600" fontSize="xl" mr={2}>
+              🩺
+            </Box>
+            <Heading size="md" color="purple.700">
+              Vet Reports
+            </Heading>
+          </Flex>
+          {selectedAnimal?.vetReports?.length > 0 ? (
+            <Table variant="simple" size="sm">
+              <Thead bg="gray.100">
+                <Tr>
+                  <Th>Date</Th>
+                  <Th>Details</Th>
+                  <Th>Food</Th>
+                  <Th>Quantity</Th>
+                  <Th>State</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {selectedAnimal.vetReports.map((report, index) => (
+                  <Tr key={index}>
+                    <Td>{new Date(report.date).toLocaleDateString() || 'N/A'}</Td>
+                    <Td>{report.details || 'No details'}</Td>
+                    <Td>{report.food || 'Not specified'}</Td>
+                    <Td>{report.quantity || 'Not specified'}</Td>
+                    <Td>{report.state || 'Not specified'}</Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          ) : (
+            <Text fontSize="lg" color="gray.600">
+              No vet reports available.
+            </Text>
+          )}
+        </Box>
+
+        {/* Food Records Section */}
+        <Box gridColumn="span 2" bg="white" p={6} borderRadius="lg" boxShadow="md">
+          <Flex alignItems="center" mb={4}>
+            <Box as="span" color="orange.600" fontSize="xl" mr={2}>
+              🍽️
+            </Box>
+            <Heading size="md" color="orange.700">
+              Food Records
+            </Heading>
+          </Flex>
+          {selectedAnimal?.foodRecords?.length > 0 ? (
+            <Table variant="simple" size="sm">
+              <Thead bg="gray.100">
+                <Tr>
+                  <Th>Date</Th>
+                  <Th>Food</Th>
+                  <Th>Quantity</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {selectedAnimal.foodRecords.map((record, index) => (
+                  <Tr key={index}>
+                    <Td>{new Date(record.date).toLocaleDateString() || 'N/A'}</Td>
+                    <Td>{record.food || 'Not specified'}</Td>
+                    <Td>{record.quantity || 'Not specified'}</Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          ) : (
+            <Text fontSize="lg" color="gray.600">
+              No food records available.
+            </Text>
+          )}
+        </Box>
+      </Grid>
     </ModalBody>
-    <ModalFooter>
-      <Button variant="ghost" onClick={onDetailsClose} colorScheme="green">Close</Button>
+
+    <ModalFooter borderTopWidth="1px" p={6}>
+      <Button variant="outline" onClick={onDetailsClose} colorScheme="gray" mr={3}>
+        Cancel
+      </Button>
+     
     </ModalFooter>
   </ModalContent>
 </Modal>
