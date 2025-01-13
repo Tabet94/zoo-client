@@ -5,11 +5,6 @@ import {
   HStack,
   IconButton,
   Button,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuDivider,
   useDisclosure,
   useColorModeValue,
   Stack,
@@ -94,7 +89,8 @@ const Navbar = () => {
             <Button
               as={RouterLink}
               to="/login"
-              colorScheme="teal"
+              color="black"
+              bgColor="yellow.400"
               size="sm"
               _hover={{ bg: 'teal.600' }}
             >

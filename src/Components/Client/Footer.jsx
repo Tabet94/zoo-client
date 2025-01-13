@@ -26,14 +26,14 @@ const ListHeader = ({ icon, children, color }) => (
 // Composant Footer pour créer un pied de page structuré et interactif
 const Footer = () => {
   // Détermine les couleurs en fonction du mode (clair ou sombre)
-  const bgColor = useColorModeValue('white', 'gray.900');
-  const textColor = useColorModeValue('black', 'gray.200');
-  const linkColor = useColorModeValue('black', 'gray.400');
+ const bgColor = useColorModeValue('gray.800', 'gray.900');
+  const textColor = useColorModeValue('white', 'gray.200');
+  const linkColor = useColorModeValue('white', 'gray.400');
 
   return (
     <Box bg={bgColor} color={textColor} py={10}>
       {/* Ligne de séparation */}
-      <Divider mb={5} />
+     
       <Container as={Stack} maxW="6xl">
         {/* Grille pour organiser les différentes sections du pied de page */}
         <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={8}>
@@ -49,7 +49,7 @@ const Footer = () => {
 
           {/* Section des liens */}
           <Stack align="flex-start">
-            <ListHeader icon={FaLink} color={textColor}>Liens</ListHeader>
+            <ListHeader icon={FaLink} color="yellow.300">Liens</ListHeader>
             <HStack spacing={2}>
               <FaHome />
               <Link href="#">Accueil</Link>
@@ -66,7 +66,7 @@ const Footer = () => {
 
           {/* Section des informations */}
           <Stack align="flex-start">
-            <ListHeader icon={FaInfoCircle} color={textColor}>Informations</ListHeader>
+            <ListHeader icon={FaInfoCircle} color="yellow.300">Informations</ListHeader>
             <HStack spacing={2}>
               <FaInfo />
               <Link href="#">Conditions générales</Link>
@@ -79,7 +79,7 @@ const Footer = () => {
 
           {/* Section des contacts */}
           <Stack align="flex-start">
-            <ListHeader icon={FaPhone} color={textColor}>Contact</ListHeader>
+            <ListHeader icon={FaPhone} color="yellow.300">Contact</ListHeader>
             <HStack spacing={2}>
               <FaPhone />
               <Link href="tel:+213676438918">05 54 88 555</Link>
@@ -99,7 +99,7 @@ const Footer = () => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Text fontSize="sm" color={linkColor}>
+          <Text fontSize="sm" color="yellow.300">
             © 2024. Tous droits réservés.
           </Text>
           {/* Icônes des réseaux sociaux */}
@@ -110,7 +110,7 @@ const Footer = () => {
               aria-label="Facebook"
               icon={<FaFacebook />}
               variant="ghost"
-              colorScheme="orange"
+            color="yellow.300"
               _hover={{ bg: 'orange.500', color: 'white' }}
             />
             <IconButton
@@ -119,7 +119,7 @@ const Footer = () => {
               aria-label="Twitter"
               icon={<FaTwitter />}
               variant="ghost"
-              colorScheme="orange"
+              color="yellow.300"
               _hover={{ bg: 'orange.500', color: 'white' }}
             />
             <IconButton
@@ -128,7 +128,7 @@ const Footer = () => {
               aria-label="Instagram"
               icon={<FaInstagram />}
               variant="ghost"
-              colorScheme="orange"
+               color="yellow.300"
               _hover={{ bg: 'orange.500', color: 'white' }}
             />
           </HStack>

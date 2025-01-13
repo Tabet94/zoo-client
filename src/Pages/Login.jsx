@@ -64,12 +64,12 @@ const Login = () => {
   };
 
   return (
-    <Flex align="center" justify="center" minH="100vh" px={4}>
-      <Box w={{ base: "100%", md: "420px" }} p={6} bg={boxBg} borderRadius="lg" boxShadow="lg">
-        <Heading textAlign="center" size="lg" mb={6} color="teal.500">
+    <Flex  bgColor = 'gray.800'align="center" justify="center" minH="100vh" px={4}>
+      <Box w={{ base: "100%", md: "420px" }} p={6}     bg="linear-gradient(to right, #2d3748, #4a5568)" borderRadius="lg" boxShadow="lg">
+        <Heading textAlign="center" size="lg" mb={6} color="yellow.400">
           Bienvenue à nouveau !
         </Heading>
-        <Text textAlign="center" mb={8} color="gray.500">
+        <Text textAlign="center" mb={8} color="gray.200">
           Veuillez vous connecter à votre compte pour continuer.
         </Text>
 
@@ -82,7 +82,7 @@ const Login = () => {
 
         <VStack spacing={5} as="form" onSubmit={formik.handleSubmit}>
           <FormControl id="email" isRequired isInvalid={formik.touched.email && formik.errors.email}>
-            <FormLabel>Email</FormLabel>
+            <FormLabel color="yellow.400">Email</FormLabel>
             <Input
               type="email"
               placeholder="Entrez votre email"
@@ -98,7 +98,7 @@ const Login = () => {
           </FormControl>
 
           <FormControl id="password" isRequired isInvalid={formik.touched.password && formik.errors.password}>
-            <FormLabel>Mot de passe</FormLabel>
+            <FormLabel color="yellow.400">Mot de passe</FormLabel>
             <Input
               type="password"
               placeholder="Entrez votre mot de passe"

@@ -14,7 +14,7 @@ import {
 import { MdEmail, MdPhone } from 'react-icons/md'; // Icônes pour l'email et le téléphone
 import { FaFacebook, FaTwitter, FaInstagram, FaWhatsapp } from 'react-icons/fa'; // Icônes pour les réseaux sociaux
 import { HiLocationMarker } from 'react-icons/hi'; // Icône pour la localisation
-import contactImage from '../../assets/zoo10.jpg'; // Image d'arrière-plan pour la section de contact
+import contactImage from '../../assets/giraffe-wild.jpg'; // Image d'arrière-plan pour la section de contact
 
 const Contact = () => {
   // Définition des couleurs dynamiques basées sur le mode clair ou sombre
@@ -50,19 +50,7 @@ const Contact = () => {
       
       <VStack position="relative" zIndex={1} spacing={8} align="center">
         {/* Titre "Contactez-nous" */}
-        <Text
-          textTransform={'uppercase'}
-          color={'white'}
-          fontWeight={700}
-          fontSize={'2xl'}
-          bgGradient="linear(to-r, #D78B3C, #9C7A3A)"
-          px={4}
-          py={2}
-          rounded={'full'}
-          textAlign="center"
-        >
-          Contactez-nous
-        </Text>
+        
 
         <Text fontSize="lg" textAlign="center" maxW="600px" margin="auto" color={'white'}>
           Nous sommes là pour vous aider ! Contactez-nous par les canaux suivants.
@@ -146,7 +134,7 @@ const Contact = () => {
             href="https://facebook.com/arcadia"
             target="_blank"
             variant="link"
-            color={accentColor}
+            color="yellow.400"
             fontSize="2xl"
             _hover={{ color: 'orange.400' }}
           >
@@ -157,7 +145,7 @@ const Contact = () => {
             href="https://twitter.com/arcadia"
             target="_blank"
             variant="link"
-            color={accentColor}
+            color="yellow.400"
             fontSize="2xl"
             _hover={{ color: 'orange.400' }}
           >
@@ -168,7 +156,7 @@ const Contact = () => {
             href="https://instagram.com/arcadia"
             target="_blank"
             variant="link"
-            color={accentColor}
+            color="yellow.400"
             fontSize="2xl"
             _hover={{ color: 'orange.400' }}
           >

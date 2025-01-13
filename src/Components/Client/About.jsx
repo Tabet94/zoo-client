@@ -7,183 +7,362 @@ import {
   Button,
   SimpleGrid,
   Flex,
-  useColorModeValue,
-  keyframes,
   VStack,
-  Divider,
+  Image,
+  IconButton,
+  useColorModeValue,
+   Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionIcon,
+  AccordionPanel
 } from '@chakra-ui/react';
 import { GiHealthPotion, GiFarmTractor, GiPawPrint } from 'react-icons/gi';
 import { motion } from 'framer-motion';
-import zooImage1 from '../../assets/zoo6.jpg';
+import { Link as RouterLink } from 'react-router-dom';
+import Slider from 'react-slick';
+import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import zooImage1 from '../../assets/giraffe.jpg';
 import zooImage2 from '../../assets/zoo3.jpg';
 import zooImage3 from '../../assets/zoo4.jpg';
+import contactImage from '../../assets/giraffe-wild.jpg'
 
-// Création d'un composant animé avec Framer Motion
+// Animated MotionBox
 const MotionBox = motion(Box);
 
-// Animation pour un effet de fondu
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-`;
-
-// Composant pour afficher une caractéristique (feature)
+// Feature Component
 const Feature = ({ text, icon, iconBg }) => (
   <MotionBox
-    whileHover={{ scale: 1.05 }} // Animation au survol
-    transition={{ duration: 0.3 }} // Durée de l'animation
+    whileHover={{ scale: 1.05 }}
+    transition={{ duration: 0.3 }}
     p={6}
-    bg={useColorModeValue('white', 'gray.800')} // Couleur de fond selon le mode clair/sombre
+    bg="linear-gradient(to right, #2d3748, #4a5568)"
     borderRadius="xl"
-    boxShadow="lg"
-    _hover={{ transform: 'translateY(-8px)', cursor: 'pointer' }} // Effet au survol
-    animation={`${fadeIn} 0.5s ease-in-out`} // Animation de fondu
+    boxShadow="md"
+    _hover={{ transform: 'translateY(-8px)', cursor: 'pointer' }}
   >
-    <Flex align="center" mb={4} direction="column" justify="center">
-      {/* Icône avec style */}
+    <Flex align="center" mb={4} direction="column">
       <Box
-        bg={iconBg} // Couleur de fond de l'icône
+        bg={iconBg}
         color="white"
         p={4}
         borderRadius="full"
         mb={3}
-        boxShadow="md"
+        boxShadow="sm"
         display="flex"
         justifyContent="center"
         alignItems="center"
       >
         {icon}
       </Box>
-      {/* Texte principal */}
-      <Text fontSize="xl" fontWeight="bold" color={useColorModeValue('gray.800', 'white')} mb={2}>
+      <Text fontSize="lg" fontWeight="bold" color="yellow.400" mb={2}>
         {text}
-      </Text>
-      {/* Description */}
-      <Text fontSize="md" color="gray.500" textAlign="center">
-        Nous nous engageons à offrir les meilleurs soins, la préservation et une expérience inoubliable pour nos animaux et nos visiteurs.
       </Text>
     </Flex>
   </MotionBox>
 );
 
-// Composant principal "About"
-const About = () => {
+// Custom Next Arrow
+const CustomNextArrow = (props) => {
+  const { onClick } = props;
   return (
-    <Container maxW="8xl" py={16} px={{ base: 4, lg: 8 }}>
-      {/* Section héroïque avec titre et description */}
-      <Box
-        bgGradient="linear(to-r, #D78B3C, #9C7A3A)" // Dégradé pour le fond
-        p={12}
-        borderRadius="xl"
-        mb={12}
-        width={{ base: '100%', sm: '80%', md: '60%' }} // Largeur adaptée selon la taille de l'écran
-        mx="auto"
-      >
-        <VStack spacing={8} align="center">
-          <Heading as="h2" fontSize="3xl" color="white" textAlign="center">
-            À propos de Zoo Arcadia
-          </Heading>
-          <Text fontSize="lg" color="white" textAlign="center" maxW="xl">
-            Arcadia est un zoo situé en France près de la forêt de Brocéliande, en Bretagne, depuis 1960. Nous possédons une grande
-            variété d'animaux, répartis par habitat (savane, jungle, marais), et veillons chaque jour à leur santé avec l'aide de vétérinaires.
-            Notre zoo est un lieu d'éducation, de conservation et d'émerveillement.
-          </Text>
-        </VStack>
-      </Box>
-
-      <Divider mb={12} /> {/* Ligne de séparation */}
-
-      {/* Section des caractéristiques */}
-      <VStack spacing={8} align="center" mb={12}>
-        <Heading as="h2" fontSize="3xl" textAlign="center" color="gray.700">
-          Ce qui nous rend spéciaux
-        </Heading>
-        {/* Affichage des caractéristiques en grille */}
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={8} textAlign="center">
-          <Feature
-            icon={<GiHealthPotion size={30} />} // Icône représentant la santé
-            iconBg="green.500"
-            text="Santé et Bien-être des Animaux"
-          />
-          <Feature
-            icon={<GiFarmTractor size={30} />} // Icône représentant les pratiques écologiques
-            iconBg="blue.500"
-            text="Pratiques Écologiques"
-          />
-          <Feature
-            icon={<GiPawPrint size={30} />} // Icône représentant la conservation
-            iconBg="orange.500"
-            text="Conservation des Animaux"
-          />
-        </SimpleGrid>
-      </VStack>
-
-      <Divider mb={12} /> {/* Ligne de séparation */}
-
-      {/* Section des expositions animales */}
-      <Box mt={16}>
-        <Heading as="h2" fontSize="3xl" textAlign="center" mb={8} color="gray.700">
-          Explorez nos Expositions Animalières
-        </Heading>
-        {/* Affichage des images des expositions */}
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={8}>
-          {[zooImage1, zooImage2, zooImage3].map((image, index) => (
-            <Box
-              key={index}
-              bgImage={`url(${image})`} // Image de fond
-              bgSize="cover"
-              bgPosition="center"
-              h="350px"
-              borderRadius="xl"
-              shadow="xl"
-              position="relative"
-              _hover={{ transform: 'scale(1.05)', transition: 'all 0.3s ease-in-out' }} // Effet au survol
-            >
-              {/* Superposition d'un filtre sombre */}
-              <Box
-                position="absolute"
-                top="0"
-                left="0"
-                right="0"
-                bottom="0"
-                bg="rgba(0, 0, 0, 0.4)"
-                borderRadius="xl"
-              />
-              {/* Texte au centre de l'image */}
-              <Stack
-                direction="row"
-                align="center"
-                justify="center"
-                h="100%"
-                textAlign="center"
-                color="white"
-                p={4}
-                zIndex={1}
-              >
-                <Text fontSize="lg" fontWeight="bold">Exposition {index + 1}</Text>
-              </Stack>
-            </Box>
-          ))}
-        </SimpleGrid>
-      </Box>
-
-      <Divider mb={12} /> {/* Ligne de séparation */}
-
-      {/* Section d'appel à l'action */}
-      <Box mt={16} textAlign="center">
-        <Heading as="h3" fontSize="2xl" mb={4}>
-          Prêt à nous rejoindre ?
-        </Heading>
-        <Text fontSize="lg" color="gray.500" mb={8}>
-          Visitez le Zoo Arcadia aujourd'hui et créez des souvenirs inoubliables avec vos proches !
-        </Text>
-      </Box>
-    </Container>
+    <IconButton
+      icon={<ArrowForwardIcon boxSize={6} />}
+      aria-label="Next"
+      position="absolute"
+      top="50%"
+      right="10px"
+      transform="translateY(-50%)"
+      zIndex={2}
+      bg="yellow.400"
+      color="gray.800"
+      _hover={{ bg: "yellow.500" }}
+      onClick={onClick}
+      boxShadow="lg"
+    />
   );
 };
 
-export default About; // Exportation du composant
+// Custom Prev Arrow
+const CustomPrevArrow = (props) => {
+  const { onClick } = props;
+  return (
+    <IconButton
+      icon={<ArrowBackIcon boxSize={6} />}
+      aria-label="Previous"
+      position="absolute"
+      top="50%"
+      left="10px"
+      transform="translateY(-50%)"
+      zIndex={2}
+      bg="yellow.400"
+      color="gray.800"
+      _hover={{ bg: "yellow.500" }}
+      onClick={onClick}
+      boxShadow="lg"
+    />
+  );
+};
+
+const About = () => {
+  const bgColor = useColorModeValue('gray.800', 'gray.900');
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    nextArrow: <CustomNextArrow />,
+    prevArrow: <CustomPrevArrow />,
+  };
+
+  return (
+    <Box bg={bgColor} py={16}>
+      <Container maxW="7xl">
+        {/* Hero Section */}
+        <Box
+          bg="linear-gradient(to right, #2d3748, #4a5568)"
+          borderRadius="lg"
+          p={10}
+          mb={16}
+        >
+          <Stack
+            direction={{ base: 'column', md: 'row' }}
+            spacing={10}
+            p={6}
+            align="center"
+            justify="space-between"
+          >
+            <Box flex="1" color="white" textAlign={{ base: 'center', md: 'left' }}>
+              <Heading
+                as="h1"
+                fontSize={{ base: '3xl', md: '5xl' }}
+                mb={4}
+                fontWeight="extrabold"
+                lineHeight="shorter"
+                textShadow="2px 2px 4px rgba(0, 0, 0, 0.6)"
+              >
+                Explorez les Merveilles de la Nature
+              </Heading>
+              <Text fontSize={{ base: 'md', md: 'lg' }} lineHeight="taller" mb={6}>
+                Partez à la découverte des habitats les plus uniques du monde, de la
+                faune diversifiée et de la beauté du monde naturel.
+              </Text>
+              <Button
+                as={RouterLink}
+                to="/services"
+                size="lg"
+                bg="yellow.400"
+                color="gray.800"
+                _hover={{
+                  bgGradient: 'linear(to-r, yellow.300, yellow.500)',
+                  transform: 'scale(1.05)',
+                }}
+                rounded="full"
+                boxShadow="lg"
+              >
+                Explorez Nos Services
+              </Button>
+            </Box>
+            <Box flex="1" maxW="3xl" overflow="hidden" boxShadow="lg">
+              <Slider {...sliderSettings}>
+                {[zooImage1, zooImage2, zooImage3].map((image, idx) => (
+                  <Image
+                    key={idx}
+                    src={image}
+                    alt={`Habitat ${idx}`}
+                    objectFit="cover"
+                    h={{ base: '300px', md: '400px' }}
+                  />
+                ))}
+              </Slider>
+            </Box>
+          </Stack>
+        </Box>
+
+        {/* Key Features */}
+        <VStack spacing={8} mb={16}>
+          <Heading as="h2" fontSize="3xl" color="gray.100">
+            Ce Qui Nous Rend Uniques
+          </Heading>
+          <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
+            <Feature icon={<GiHealthPotion size={30} />} iconBg="green.500" text="Santé et Bien-être des Animaux" />
+            <Feature icon={<GiFarmTractor size={30} />} iconBg="blue.500" text="Pratiques Écologiques" />
+            <Feature icon={<GiPawPrint size={30} />} iconBg="orange.500" text="Conservation des Espèces" />
+          </SimpleGrid>
+        </VStack>
+
+        {/* New Section: Habitats */}
+        
+         
+        <VStack spacing={16} mb={24}>
+
+{/* Section 1: Nos Habitats */}
+
+<Heading as="h2" fontSize="3xl" color="gray.100">
+            Nos Habitats
+          </Heading>
+          <Text color="gray.300" textAlign="center" maxW="3xl">
+            Découvrez des habitats variés recréant l’environnement naturel des animaux, notamment la savane africaine,
+            la jungle tropicale, et les montagnes enneigées.
+          </Text>
+          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
+            <Box p={6} bg="gray.700" borderRadius="lg" boxShadow="lg">
+              <Heading fontSize="xl" color="yellow.400">Savane Africaine</Heading>
+              <Text mt={2} color="gray.300">Une étendue herbeuse où vivent lions, éléphants, et girafes.</Text>
+            </Box>
+            <Box p={6} bg="gray.700" borderRadius="lg" boxShadow="lg">
+              <Heading fontSize="xl" color="yellow.400">Jungle Tropicale</Heading>
+              <Text mt={2} color="gray.300">Un paradis vert abritant singes, perroquets, et serpents exotiques.</Text>
+            </Box>
+          </SimpleGrid>
+       
+
+        {/* New Section: Animals */}
+       <Box/>
+
+{/* Section 2: Nos Animaux */}
+<Box bg="gray.700" p={16} borderRadius="xl" boxShadow="xl">
+  <Heading as="h2" fontSize="4xl" color="gray.100" textAlign="center" mb={8}>
+    Nos Animaux
+  </Heading>
+  <Text color="gray.300" textAlign="center" maxW="4xl" mb={8}>
+    Rencontrez nos résidents fascinants : des majestueux tigres aux paisibles pandas.
+  </Text>
+  <Accordion allowMultiple>
+    <AccordionItem>
+      <AccordionButton>
+        <Box flex="1" textAlign="left">
+          <Heading fontSize="xl" color="teal.300">Tigres du Bengale</Heading>
+        </Box>
+        <AccordionIcon />
+      </AccordionButton>
+      <AccordionPanel pb={4}>
+        <Text color="gray.300">Ces prédateurs puissants rôdent dans un habitat dédié.</Text>
+      </AccordionPanel>
+    </AccordionItem>
+    <AccordionItem>
+      <AccordionButton>
+        <Box flex="1" textAlign="left">
+          <Heading fontSize="xl" color="orange.300">Pandas Géants</Heading>
+        </Box>
+        <AccordionIcon />
+      </AccordionButton>
+      <AccordionPanel pb={4}>
+        <Text color="gray.300">Un enclos paisible recréant les forêts de bambou.</Text>
+      </AccordionPanel>
+    </AccordionItem>
+  </Accordion>
+</Box>
+
+{/* Section 3: Nos Services */}
+<Box bg="gray.800" p={16} borderRadius="xl" boxShadow="xl">
+  <Heading as="h2" fontSize="4xl" color="gray.100" textAlign="center" mb={8}>
+    Nos Services
+  </Heading>
+  <Text color="gray.300" textAlign="center" maxW="4xl" mb={8}>
+    Explorez les services exceptionnels que nous offrons pour enrichir votre expérience dans notre zoo.
+  </Text>
+  <VStack spacing={16}>
+    <Box display="flex" flexDirection={{ base: 'column', md: 'row-reverse' }} alignItems="center" justify="center" spacing={8}>
+      <Image 
+        src={zooImage1}
+        alt="Visite Guidée"
+        borderRadius="lg"
+        maxW={{ base: '100%', md: '50%' }}
+        objectFit="cover"
+        mb={{ base: 4, md: 0 }} 
+        maxHeight={{ base: '300px', md: '250px' }}
+      />
+      <Box flex="1" p={8} bg="teal.400" borderRadius="lg" boxShadow="lg">
+        <Heading fontSize="2xl" color="gray.800" mb={4}>Visite Guidée</Heading>
+        <Text color="gray.800" mb={4}>Découvrez le zoo avec nos guides experts, qui vous emmèneront à travers des habitats fascinants.</Text>
+        <Button colorScheme="teal" variant="outline" size="sm" rounded="full">Réservez Maintenant</Button>
+      </Box>
+    </Box>
+
+    <Box display="flex" flexDirection={{ base: 'column', md: 'row' }} alignItems="center" justify="center" spacing={8}>
+      <Image 
+        src={zooImage1}
+        alt="Experience Interactive"
+        borderRadius="lg"
+        maxW={{ base: '100%', md: '50%' }}
+        objectFit="cover"
+        mb={{ base: 4, md: 0 }} 
+        maxHeight={{ base: '300px', md: '250px' }} 
+      />
+      <Box flex="1" p={8} bg="orange.300" borderRadius="lg" boxShadow="lg">
+        <Heading fontSize="2xl" color="gray.800" mb={4}>Expérience Interactives</Heading>
+        <Text color="gray.800" mb={4}>Participez à des activités interactives pour toute la famille, comme nourrir les animaux.</Text>
+        <Button colorScheme="orange" variant="outline" size="sm" rounded="full">Inscrivez-vous</Button>
+      </Box>
+    </Box>
+
+    <Box display="flex" flexDirection={{ base: 'column', md: 'row-reverse' }} alignItems="center" justify="center" spacing={8}>
+      <Image 
+        src={zooImage1}
+        alt="Événements Spéciaux"
+        borderRadius="lg"
+        maxW={{ base: '100%', md: '50%' }}
+        objectFit="cover"
+        mb={{ base: 4, md: 0 }} 
+        maxHeight={{ base: '300px', md: '250px' }} 
+      />
+      <Box flex="1" p={8} bg="yellow.300" borderRadius="lg" boxShadow="lg">
+        <Heading fontSize="2xl" color="gray.800" mb={4}>Événements Spéciaux</Heading>
+        <Text color="gray.800" mb={4}>Assistez à nos événements exclusifs, comme les soirées à thème et les festivals d'animaux.</Text>
+        <Button colorScheme="yellow" variant="outline" size="sm" rounded="full">Voir les Événements</Button>
+      </Box>
+    </Box>
+  </VStack>
+</Box>
+
+
+
+</VStack>
+        {/* Footer Stats */}
+        <Box textAlign="center" color="gray.300">
+          <Text fontSize={{ base: 'lg', md: 'xl' }} mb={4}>
+            Depuis 1960, le Zoo Arcadia invite les amoureux de la nature à explorer des habitats immersifs et une faune fascinante. Découvrez plus de <b>300 espèces</b> et plongez dans une aventure éducative unique au cœur de la forêt enchantée de Brocéliande.
+          </Text>
+          <Stack direction="row" spacing={6} justify="center" mb={6}>
+            <Box textAlign="center">
+              <Text fontSize="3xl" color="teal.300" fontWeight="bold">
+                300+
+              </Text>
+              <Text fontSize="sm">Espèces</Text>
+            </Box>
+            <Box textAlign="center">
+              <Text fontSize="3xl" color="orange.300" fontWeight="bold">
+                60+
+              </Text>
+              <Text fontSize="sm">Années d'Histoire</Text>
+            </Box>
+            <Box textAlign="center">
+              <Text fontSize="3xl" color="yellow.300" fontWeight="bold">
+                50+
+              </Text>
+              <Text fontSize="sm">Hectares d'Aventures</Text>
+            </Box>
+          </Stack>
+          <Button
+            as={RouterLink}
+            to="/habitat"
+            size="lg"
+            colorScheme="teal"
+            bg="yellow.400"
+            color="black"
+            _hover={{ bg: 'teal.500' }}
+            fontWeight="bold"
+          >
+            Découvrez Nos Animaux
+          </Button>
+        </Box>
+      </Container>
+    </Box>
+  );
+};
+
+export default About;

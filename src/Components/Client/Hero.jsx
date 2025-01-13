@@ -1,5 +1,5 @@
 import { Stack, Button, Text, VStack, useBreakpointValue, Box, Flex } from '@chakra-ui/react';
-import background from '../../assets/zoo.jpg';
+import background from '../../assets/giraffe-wild.jpg';
 
 // Composant Hero pour afficher une section d'accueil immersive avec une image de fond
 const Hero = () => {

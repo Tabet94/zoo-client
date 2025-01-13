@@ -16,9 +16,9 @@ const Home = () => {
         hidden: { opacity: 0, y: 30 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.7 } },
     };
-
+    const bgColor = useColorModeValue('gray.800', 'gray.900');
     return (
-        <Box>
+        <Box bg={bgColor}>
             {/* Hero Section */}
             <MotionBox
                 as="section"
