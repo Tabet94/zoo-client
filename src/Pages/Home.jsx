@@ -4,6 +4,8 @@ import About from '../Components/Client/About';
 import Contact from '../Components/Client/Contact';
 import { Box, useColorModeValue } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
+import CreateReview from '../Components/Client/CreateReview';
+import Review from '../Components/Client/Review';
 
 
 // Define motion element from Chakra UI
@@ -60,6 +62,8 @@ const Home = () => {
             >
                
                 <Contact />
+                <CreateReview />
+                <Review />
             </MotionBox>
         </Box>
     );

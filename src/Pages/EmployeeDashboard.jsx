@@ -10,6 +10,8 @@ import ListHabitat from '../Components/Admin/Habitat/ListHabitats';
 import ZooService from '../Components/Employee/ZooService';
 import AnimalFoodRecords from '../Components/Employee/AnimalFoodRecords'
 import SidebarEmpl from '../Components/Employee/SideBarEmpl';
+import ManageReviews from '../Components/Employee/ManageReviews';
+
 const EmployeeDashboard = () => {
   const bg = useColorModeValue('#f9f9f9', '#1a202c');
   const panelBg = useColorModeValue('#ffffff', '#4a5568');
@@ -49,6 +51,9 @@ const EmployeeDashboard = () => {
               </TabPanel>
               <TabPanel>
                 <AnimalFoodRecords />
+              </TabPanel>
+              <TabPanel>
+                <ManageReviews />
               </TabPanel>
            
             </TabPanels>

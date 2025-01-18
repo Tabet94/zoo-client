@@ -31,6 +31,7 @@ const SidebarEmpl = ({ activeTab, setActiveTab }) => {
   const TabLinks = [
     { label: 'Services', icon: RiServiceLine },
     { label: 'Animals', icon: FaPaw },
+    { label: 'Reviews', icon: FaPaw },
 
   ];
 

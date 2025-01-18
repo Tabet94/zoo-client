@@ -87,6 +87,7 @@ const AnimalDetailModal = ({ animalId }) => {
             <Icon as={FaLeaf} mr={2} />
             <strong>Diet:</strong> {animal.diet || 'Unknown'}
           </Text>
+         
         </Box>
       </Flex>
 

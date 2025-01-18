@@ -8,22 +8,22 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import animalService from '../../../Services/animalService';
-import habitatService from '../../../Services/habitatService'; // Assuming you have this service to fetch habitats
+import habitatService from '../../../Services/habitatService'; // Supposons que vous avez ce service pour récupérer les habitats
 import { useState } from 'react';
 
 const CreateAnimal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const queryClient = useQueryClient();
-  const [file, setFile] = useState(null); // State for the image file
+  const [file, setFile] = useState(null); // État pour le fichier image
 
-  // Fetch habitats when the component is mounted
+  // Récupérer les habitats lorsque le composant est monté
   const { data: habitats = [], isLoading, isError } = useQuery({
     queryKey: ['habitats'],
     queryFn: habitatService.getAllHabitats,
     onError: (error) => {
       toast({
-        title: 'Error fetching habitats',
+        title: 'Erreur lors de la récupération des habitats',
         description: error.message,
         status: 'error',
         duration: 5000,
@@ -36,7 +36,7 @@ const CreateAnimal = () => {
     mutationFn: animalService.createAnimal,
     onSuccess: () => {
       toast({
-        title: 'Animal created successfully!',
+        title: 'Animal créé avec succès !',
         status: 'success',
         duration: 5000,
         isClosable: true,
@@ -46,13 +46,13 @@ const CreateAnimal = () => {
     },
     onError: (error) => {
       toast({
-        title: 'Error creating animal.',
+        title: 'Erreur lors de la création de l\'animal.',
         description: error.response?.data?.message || error.message,
         status: 'error',
         duration: 5000,
         isClosable: true,
       });
-      console.error('Error creating animal:', error.response?.data || error.message);
+      console.error('Erreur lors de la création de l\'animal :', error.response?.data || error.message);
     },
   });
 
@@ -63,9 +63,9 @@ const CreateAnimal = () => {
   };
 
   const validationSchema = Yup.object({
-    name: Yup.string().required('Animal name is required'),
-    race: Yup.string().required('Animal race is required'),
-    habitat: Yup.string().required('Animal habitat is required'),
+    name: Yup.string().required('Le nom de l\'animal est requis'),
+    race: Yup.string().required('La race de l\'animal est requise'),
+    habitat: Yup.string().required('L\'habitat de l\'animal est requis'),
   });
 
   const handleFileChange = (event) => {
@@ -90,17 +90,14 @@ const CreateAnimal = () => {
     });
   };
 
-  
-
   return (
     <>
-     
-        <IconButton
+      <IconButton
         icon={<AddIcon />}
-        aria-label="Add Habitat"
+        aria-label="Ajouter un animal"
         colorScheme="teal"
         onClick={onOpen}
-        size="sm" // Small button
+        size="sm"
         borderRadius="md"
         boxShadow="sm"
       />
@@ -114,7 +111,7 @@ const CreateAnimal = () => {
             bg="linear-gradient(to-r, #663300, #cc6600)"
             color="black"
           >
-            Create New Animal
+            Créer un nouvel animal
           </ModalHeader>
           <ModalCloseButton color="black" />
           <ModalBody>
@@ -127,20 +124,20 @@ const CreateAnimal = () => {
                 <Form>
                   <Grid templateColumns="repeat(2, 1fr)" gap={6} mt={4}>
                     <FormControl>
-                      <FormLabel>Animal Name</FormLabel>
-                      <Field name="name" as={Input} placeholder="Enter animal name" />
+                      <FormLabel>Nom de l'animal</FormLabel>
+                      <Field name="name" as={Input} placeholder="Entrez le nom de l'animal" />
                       <ErrorMessage name="name" component={FormErrorMessage} />
                     </FormControl>
 
                     <FormControl>
                       <FormLabel>Race</FormLabel>
-                      <Field name="race" as={Textarea} placeholder="Enter race" />
+                      <Field name="race" as={Textarea} placeholder="Entrez la race" />
                       <ErrorMessage name="race" component={FormErrorMessage} />
                     </FormControl>
 
                     <FormControl>
                       <FormLabel>Habitat</FormLabel>
-                      <Field name="habitat" as={Select} placeholder="Select habitat">
+                      <Field name="habitat" as={Select} placeholder="Sélectionnez un habitat">
                         {!isLoading && habitats && habitats.map((habitat) => (
                           <option key={habitat._id} value={habitat._id}>
                             {habitat.name}
@@ -162,14 +159,14 @@ const CreateAnimal = () => {
 
                   <ModalFooter justifyContent="center" mt={6}>
                     <Button onClick={onClose} mr={3} colorScheme="gray">
-                      Cancel
+                      Annuler
                     </Button>
                     <Button
                       colorScheme="teal"
                       borderRadius="md"
                       isLoading={isSubmitting}
                       type="submit"
-                      size="sm" // Small button
+                      size="sm"
                       width="auto"
                       _hover={{
                         bg: 'teal.600',
@@ -177,7 +174,7 @@ const CreateAnimal = () => {
                         boxShadow: 'xl',
                       }}
                     >
-                      Create Animal
+                      Créer l'animal
                     </Button>
                   </ModalFooter>
                 </Form>

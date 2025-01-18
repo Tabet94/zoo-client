@@ -7,6 +7,7 @@ import RegisterVet from '../Components/Admin/RegisterVet';
 import ListServices from '../Components/Admin/ZooServices/ListServices';
 import Animals from '../Components/Admin/Animals/ListAnimals';
 import ListHabitat from '../Components/Admin/Habitat/ListHabitats';
+import RegisterEmployee from '../Components/Admin/RegisterEmployee';
 
 const AdminDashboard = () => {
   const bg = useColorModeValue('#f9f9f9', '#1a202c');
@@ -43,6 +44,9 @@ const AdminDashboard = () => {
             <TabPanels bg={panelBg} p={{ base: 4, md: 6 }} borderRadius="md" boxShadow="sm">
               <TabPanel>
                 <RegisterVet />
+              </TabPanel>
+              <TabPanel>
+                <RegisterEmployee />
               </TabPanel>
               <TabPanel>
                 <ListServices />

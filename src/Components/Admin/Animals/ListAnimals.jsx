@@ -235,8 +235,11 @@ const AnimalComponent = () => {
           <Text fontSize="lg" color="gray.700">
             <strong>Habitat:</strong> {selectedAnimal?.habitat?.name || 'Unknown'}
           </Text>
+          <Text fontSize="lg" color="gray.700">
+            <strong>nombre de views:</strong> {selectedAnimal?.stats?.views || 0}
+          </Text>
         </Box>
-
+        {/* <Text color="red">Views: {animal.stats?.views || 0}</Text> */}
       
 
         {/* Vet Reports Section */}

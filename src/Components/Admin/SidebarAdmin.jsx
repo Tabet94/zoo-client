@@ -30,6 +30,7 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
   // Navigation Links
   const TabLinks = [
     { label: 'Vet Register', icon: AiOutlineUser },
+    { label: 'Employee Register', icon: AiOutlineUser },
     { label: 'Services', icon: RiServiceLine },
     { label: 'Animals', icon: FaPaw },
     { label: 'Habitat', icon: AiOutlineHome },
