@@ -11,7 +11,11 @@ import {
   Input,
   Textarea,
   useToast,
+  Stack,
+  Heading,
+  useBreakpointValue,
 } from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import reviewService from "../../Services/reviewService";
 
 // Validation Schema using Yup
@@ -23,6 +27,8 @@ const ReviewSchema = Yup.object().shape({
     .required("Comment is required")
     .min(10, "Comment must be at least 10 characters"),
 });
+
+const MotionBox = motion(Box);
 
 const CreateReview = () => {
   const toast = useToast();
@@ -61,14 +67,27 @@ const CreateReview = () => {
   };
 
   return (
-    <Box
-      maxW="500px"
+    <MotionBox
+      maxW="lg"
       mx="auto"
-      p="6"
+      p={{ base: "4", sm: "6" }}
       boxShadow="lg"
-      borderRadius="md"
-      bg="white"
+      borderRadius="xl"
+      bg="linear-gradient(to right, #2d3748, #4a5568)"
+      transform="scale(1)"
+      whileHover={{ scale: 1.02 }}
+      transition="all 0.3s ease"
+      mt={{ base: "5", sm: "8" }}
     >
+      <Heading
+        textAlign="center"
+        fontSize={{ base: "2xl", sm: "3xl" }}
+        mb="6"
+        color="yellow.400"
+      >
+        Share Your Experience
+      </Heading>
+
       <Formik
         initialValues={{ pseudo: "", comment: "" }}
         validationSchema={ReviewSchema}
@@ -76,51 +95,67 @@ const CreateReview = () => {
       >
         {({ isSubmitting }) => (
           <Form>
-            {/* Pseudo Field */}
-            <Field name="pseudo">
-              {({ field, form }) => (
-                <FormControl
-                  isInvalid={form.errors.pseudo && form.touched.pseudo}
-                  mb="4"
-                >
-                  <FormLabel>Pseudo</FormLabel>
-                  <Input {...field} placeholder="Enter your pseudo" />
-                  <FormErrorMessage>{form.errors.pseudo}</FormErrorMessage>
-                </FormControl>
-              )}
-            </Field>
+            <Stack spacing={4}>
+              {/* Pseudo Field */}
+              <Field name="pseudo">
+                {({ field, form }) => (
+                  <FormControl
+                    isInvalid={form.errors.pseudo && form.touched.pseudo}
+                  >
+                    <FormLabel color="yellow.400" fontWeight="semibold">
+                      Pseudo
+                    </FormLabel>
+                    <Input
+                      {...field}
+                      placeholder="Enter your pseudo"
+                      borderRadius="md"
+                      size="lg"
+                      _focus={{ borderColor: "teal.500" }}
+                    />
+                    <FormErrorMessage>{form.errors.pseudo}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
 
-            {/* Comment Field */}
-            <Field name="comment">
-              {({ field, form }) => (
-                <FormControl
-                  isInvalid={form.errors.comment && form.touched.comment}
-                  mb="4"
-                >
-                  <FormLabel>Comment</FormLabel>
-                  <Textarea
-                    {...field}
-                    placeholder="Enter your comment"
-                    resize="vertical"
-                  />
-                  <FormErrorMessage>{form.errors.comment}</FormErrorMessage>
-                </FormControl>
-              )}
-            </Field>
+              {/* Comment Field */}
+              <Field name="comment">
+                {({ field, form }) => (
+                  <FormControl
+                    isInvalid={form.errors.comment && form.touched.comment}
+                  >
+                    <FormLabel color="yellow.400" fontWeight="semibold">
+                      Comment
+                    </FormLabel>
+                    <Textarea
+                      {...field}
+                      placeholder="Enter your comment"
+                      resize="vertical"
+                      borderRadius="md"
+                      size="lg"
+                      _focus={{ borderColor: "teal.500" }}
+                    />
+                    <FormErrorMessage>{form.errors.comment}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
 
-            {/* Submit Button */}
-            <Button
-              type="submit"
-              colorScheme="blue"
-              isLoading={isSubmitting || mutation.isLoading}
-              width="full"
-            >
-              Submit Review
-            </Button>
+              {/* Submit Button */}
+              <Button
+                type="submit"
+                colorScheme="teal"
+                size="lg"
+                isLoading={isSubmitting || mutation.isLoading}
+                isFullWidth
+                borderRadius="md"
+                _hover={{ bg: "teal.600" }}
+              >
+                Submit Review
+              </Button>
+            </Stack>
           </Form>
         )}
       </Formik>
-    </Box>
+    </MotionBox>
   );
 };
 

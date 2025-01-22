@@ -1,5 +1,3 @@
-// Ce composant React nommé "Contact" crée une section de contact élégante pour une page web en utilisant Chakra UI.
-
 import React from 'react';
 import {
   Box,

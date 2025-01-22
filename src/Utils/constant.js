@@ -7,5 +7,6 @@ export const API_ENDPOINTS = {
     ANIMAL: '/animals',
     REPORT: '/vetreport',
     RECORD: '/foodrecord',
-    REVIEW: '/reviews'
+    REVIEW: '/reviews',
+    CONTACT:'/contact'
   };

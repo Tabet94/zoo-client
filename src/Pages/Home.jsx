@@ -62,7 +62,10 @@ const Home = () => {
             >
                
                 <Contact />
+                <Box marginTop='5rem'>
                 <CreateReview />
+                </Box>
+                
                 <Review />
             </MotionBox>
         </Box>

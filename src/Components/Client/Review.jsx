@@ -16,7 +16,7 @@ const Review = () => {
   if (isError) return <Text color="red.500">Error loading reviews</Text>;
 
   return (
-    <Box py={12} px={4} bg="gray.800">
+    <Box  py={12} px={4} bg="gray.800">
       <Heading size="lg" textAlign="center" mb={8} color="yellow.400">
         What Our Customers Are Saying
       </Heading>

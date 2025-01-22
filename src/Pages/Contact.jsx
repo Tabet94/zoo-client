@@ -47,7 +47,7 @@ const Contact = () => {
   };
 
   return (
-    <Box>
+    <Box bg="gray.800" color="white">
       {/* Header Section */}
       <Box
         bgImage="url('https://images.unsplash.com/photo-1580278858858-d4ef9ce4b9c8')"
@@ -55,7 +55,7 @@ const Contact = () => {
         bgPosition="center"
         py={20}
         px={5}
-        color="white"
+       
       >
         <Flex
           direction="column"
@@ -65,6 +65,8 @@ const Contact = () => {
           py={10}
           px={5}
           borderRadius="md"
+           color="yellow.400"
+         
         >
           <Heading fontSize={{ base: "3xl", md: "5xl" }} mb={4}>
             Contactez-Nous
@@ -77,12 +79,12 @@ const Contact = () => {
       </Box>
 
       {/* Contact Form Section */}
-      <Box py={10} px={5} bg="gray.50">
+      <Box py={10} px={5} bg="gray.800">
         <VStack spacing={6} align="center" maxW="700px" mx="auto">
-          <Heading fontSize="2xl" color="teal.600">
+          <Heading fontSize="2xl" color="yellow.400">
             Laissez-nous un message
           </Heading>
-          <Text fontSize="md" color="gray.600" textAlign="center">
+          <Text fontSize="md" color="gray.400" textAlign="center">
             Remplissez vos coordonnées et votre message. Nous ferons de notre mieux pour vous
             répondre rapidement.
           </Text>
@@ -95,8 +97,9 @@ const Contact = () => {
               <Form style={{ width: "100%" }}>
                 <VStack spacing={4}>
                   <FormControl isInvalid={errors.name && touched.name}>
-                    <FormLabel>Nom</FormLabel>
+                    <FormLabel color="yellow.400">Nom</FormLabel>
                     <Field
+                    
                       as={Input}
                       name="name"
                       placeholder="Entrez votre nom"
@@ -108,7 +111,7 @@ const Contact = () => {
                   </FormControl>
 
                   <FormControl isInvalid={errors.email && touched.email}>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel color="yellow.400">Email</FormLabel>
                     <Field
                       as={Input}
                       name="email"
@@ -122,7 +125,7 @@ const Contact = () => {
                   </FormControl>
 
                   <FormControl isInvalid={errors.message && touched.message}>
-                    <FormLabel>Message</FormLabel>
+                    <FormLabel color="yellow.400">Message</FormLabel>
                     <Field
                       as={Textarea}
                       name="message"
