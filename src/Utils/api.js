@@ -2,8 +2,12 @@ import axios from 'axios';
 
 const api = axios.create({
   baseURL: 'https://zoo-api-2ivv.onrender.com/api/v1/',
- 
 });
+// const api = axios.create({
+//   baseURL: 'http://localhost:5000/api/v1/',
+ 
+// });
+
 
 // Request interceptor to add token to headers
 api.interceptors.request.use(
