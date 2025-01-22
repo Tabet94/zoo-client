@@ -31,7 +31,7 @@ import {
 } from '@chakra-ui/react';
 import { DeleteIcon, EditIcon, AddIcon, InfoIcon } from '@chakra-ui/icons';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import zooService from '../../../Services/ZooService';
+import zooService from '../../../Services/zooServices';
 import CreateService from './CreateService';
 
 const ListService = () => {

@@ -31,7 +31,7 @@ import {
 } from '@chakra-ui/react';
 import {  EditIcon, InfoIcon } from '@chakra-ui/icons';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import zooService from '../../Services/ZooService.js';
+import zooService from '../../Services/zooServices.js';
 
 
 const ZooService = () => {

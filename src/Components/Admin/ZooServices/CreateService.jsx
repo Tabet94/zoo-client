@@ -7,7 +7,7 @@ import { AddIcon } from '@chakra-ui/icons';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import zooService from '../../../Services/ZooService';
+import zooService from '../../../Services/zooServices';
 
 const CreateService = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
