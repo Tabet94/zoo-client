@@ -12,7 +12,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import zooService from "../Services/ZooService"; // Import your service
+import zooService from "../Services/ZooService";
 import serviceheader from "../assets/service.jpg";
 
 const Services = () => {
