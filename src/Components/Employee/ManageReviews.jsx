@@ -24,7 +24,7 @@ import {
 } from '@chakra-ui/react';
 import { InfoIcon } from '@chakra-ui/icons';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import reviewService from '../../Services/reviewService';
+import reviewService from '../../Services/reviewService.js';
 
 const ManageReviews = () => {
   const [selectedReview, setSelectedReview] = useState(null);

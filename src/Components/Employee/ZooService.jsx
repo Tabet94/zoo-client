@@ -29,9 +29,9 @@ import {
   VStack,
   Tooltip,
 } from '@chakra-ui/react';
-import { DeleteIcon, EditIcon, AddIcon, InfoIcon } from '@chakra-ui/icons';
+import {  EditIcon, InfoIcon } from '@chakra-ui/icons';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import zooService from '../../Services/zooService'
+import zooService from '../../Services/ZooService.js';
 
 
 const ZooService = () => {

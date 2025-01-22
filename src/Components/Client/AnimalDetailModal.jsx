@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { FaPaw, FaLeaf } from 'react-icons/fa'; // Icons for animal and nature
-import animalService from '../../Services/animalService';
+import animalService from '../../Services/animalService.js';
 
 const AnimalDetailModal = ({ animalId }) => {
   const { data: animal, isLoading, isError } = useQuery({

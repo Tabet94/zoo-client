@@ -11,7 +11,7 @@ import {
   useColorModeValue,
   useBreakpointValue,
 } from '@chakra-ui/react';
-import { AiOutlineUser, AiOutlineHome } from 'react-icons/ai';
+
 import { RiServiceLine } from 'react-icons/ri';
 import { FaPaw } from 'react-icons/fa';
 import { AuthContext } from '../../Context/AuthContext';

@@ -16,7 +16,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik"; // Import Formik
 import * as Yup from "yup"; // Import Yup
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../Context/AuthContext";
 
 const Login = () => {
   const { login } = useContext(AuthContext); // Access the login function from AuthContext

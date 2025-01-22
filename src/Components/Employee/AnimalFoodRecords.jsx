@@ -35,8 +35,8 @@ import {
 } from '@chakra-ui/react';
 import { ViewIcon, AddIcon } from '@chakra-ui/icons';
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
-import animalService from '../../Services/animalService';
-import foodService from '../../Services/foodService'; // Importing foodService
+import animalService from '../../Services/animalService.js';
+import foodService from '../../Services/foodService.js'; // Importing foodService
 import useFetchById from '../recordhook';
 
 const AnimalFoodRecord = () => {

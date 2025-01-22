@@ -13,8 +13,8 @@ import {
   Text,
   useToast,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
-import authService from "../../Services/authService";
+
+import authService from "../../Services/authService.js";
 
 const RegisterVet = () => {
   const toast = useToast();

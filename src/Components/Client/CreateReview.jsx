@@ -16,7 +16,7 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import reviewService from "../../Services/reviewService";
+import reviewService from "../../Services/reviewService.js";
 
 // Validation Schema using Yup
 const ReviewSchema = Yup.object().shape({

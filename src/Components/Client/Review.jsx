@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Heading, Text, SimpleGrid, Card, CardBody, Stack, Button, Avatar, IconButton } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { FiArrowRight } from 'react-icons/fi';  // Optional: for "Read More" icon
-import reviewService from '../../Services/reviewService';
+import reviewService from '../../Services/reviewService.js';
 
 const Review = () => {
   // Fetch visible reviews for the client side using useQuery
