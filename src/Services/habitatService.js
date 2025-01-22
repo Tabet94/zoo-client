@@ -41,7 +41,7 @@ const habitatService = {
       const response = await api.put(`${API_ENDPOINTS.HABITAT}/${id}`, habitatData);
       return response; // Return the updated animal data
     } catch (error) {
-      console.error("Error updating habitat:", error);
+     
       throw error.response?.data?.message || "Failed to update habitat";
     }
   },
@@ -52,7 +52,7 @@ const habitatService = {
       const response = await api.delete(`${API_ENDPOINTS.HABITAT}/${id}`);
       return response.data; 
     } catch (error) {
-      console.error("Error deleting habitat:", error);
+     
       throw error.response?.data?.message || "Failed to delete habitat";
     }
   }

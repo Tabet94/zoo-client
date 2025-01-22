@@ -8,7 +8,7 @@ const foodService = {
       const response = await api.post(`${API_ENDPOINTS.RECORD}/${animalId}`, recordData);
       return response.data; 
     } catch (error) {
-      console.error("Error creating food record:", error);
+      
       throw error.response?.data?.message || "Failed to create food record";
     }
   },
@@ -19,7 +19,7 @@ const foodService = {
       const response = await api.get(API_ENDPOINTS.RECORD);
       return response; 
     } catch (error) {
-      console.error("Error fetching food records:", error);
+      
       throw error.response?.data?.message || "Failed to fetch food records";
     }
   },
@@ -30,7 +30,7 @@ const foodService = {
       const response = await api.get(`${API_ENDPOINTS.RECORD}/${animalId}`);
       return response; 
     } catch (error) {
-      console.error("Error fetching food records by animal ID:", error);
+     
       throw error.response?.data?.message || "Failed to fetch food records";
     }
   },
