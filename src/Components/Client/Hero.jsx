@@ -1,5 +1,6 @@
 import { Stack, Button, Text, VStack, useBreakpointValue, Box, Flex } from '@chakra-ui/react';
 import background from '../../assets/giraffe-wild.jpg';
+import { Link as RouterLink } from 'react-router-dom';
 
 // Composant Hero pour afficher une section d'accueil immersive avec une image de fond
 const Hero = () => {
@@ -48,6 +49,8 @@ const Hero = () => {
         {/* Bouton centré */}
         <Stack direction={'row'} spacing={4} justify={'center'}>
           <Button
+            as={RouterLink}
+                          to="/habitat"
             bg={'teal.400'} // Couleur de fond
             rounded={'full'} // Forme arrondie
             color={'black'} // Couleur du texte

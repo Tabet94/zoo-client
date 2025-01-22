@@ -279,7 +279,7 @@ const About = () => {
       <Box flex="1" p={8} bg="teal.400" borderRadius="lg" boxShadow="lg">
         <Heading fontSize="2xl" color="gray.800" mb={4}>Visite Guidée</Heading>
         <Text color="gray.800" mb={4}>Découvrez le zoo avec nos guides experts, qui vous emmèneront à travers des habitats fascinants.</Text>
-        <Button colorScheme="teal" variant="outline" size="sm" rounded="full">Réservez Maintenant</Button>
+      
       </Box>
     </Box>
 
@@ -296,7 +296,7 @@ const About = () => {
       <Box flex="1" p={8} bg="orange.300" borderRadius="lg" boxShadow="lg">
         <Heading fontSize="2xl" color="gray.800" mb={4}>Expérience Interactives</Heading>
         <Text color="gray.800" mb={4}>Participez à des activités interactives pour toute la famille, comme nourrir les animaux.</Text>
-        <Button colorScheme="orange" variant="outline" size="sm" rounded="full">Inscrivez-vous</Button>
+      
       </Box>
     </Box>
 
@@ -313,7 +313,7 @@ const About = () => {
       <Box flex="1" p={8} bg="yellow.300" borderRadius="lg" boxShadow="lg">
         <Heading fontSize="2xl" color="gray.800" mb={4}>Événements Spéciaux</Heading>
         <Text color="gray.800" mb={4}>Assistez à nos événements exclusifs, comme les soirées à thème et les festivals d'animaux.</Text>
-        <Button colorScheme="yellow" variant="outline" size="sm" rounded="full">Voir les Événements</Button>
+        
       </Box>
     </Box>
   </VStack>
