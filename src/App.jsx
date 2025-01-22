@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import { AuthContext } from "./context/AuthContext";
+import { AuthContext } from "./Context/AuthContext";
 import Home from "./Pages/Home";
 import Layout from "./Components/Client/Layout";
 import Services from "./Pages/Services";
