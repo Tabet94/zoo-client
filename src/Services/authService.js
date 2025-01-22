@@ -7,7 +7,7 @@ const authService = {
   login: async (credentials) => {
     try {
       const response = await api.post(API_ENDPOINTS.LOGIN, credentials);
-     
+      console.log('Login response:', response);
       const { token } = response;
 
       if (!token) {
@@ -16,7 +16,7 @@ const authService = {
 
       localStorage.setItem('token', token);
       const decoded = jwtDecode(token);
-      
+      console.log('Decoded user:', decoded);
       return { ...response, user: decoded };
     } catch (error) {
       console.error('Login failed:', error);
@@ -50,7 +50,7 @@ const authService = {
   // Logout function with token removal and cleanup
   logout: () => {
     localStorage.removeItem("token");  // Remove token from localStorage
-    
+    console.log('User logged out successfully');
   },
 
  

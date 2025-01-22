@@ -18,7 +18,7 @@ const zooService = {
       const response = await api.get(API_ENDPOINTS.ZOO_SERVICE);
       return response; // Return the list of all services
     } catch (error) {
-      
+      console.error("Error fetching services:", error);
       throw error.response?.data?.message || "Failed to fetch services";
     }
   },
@@ -29,7 +29,7 @@ const zooService = {
       const response = await api.get(`${API_ENDPOINTS.ZOO_SERVICE}/${id}`);
       return response; // Return the specific service data
     } catch (error) {
-      
+      console.error("Error fetching service by ID:", error);
       throw error.response?.data?.message || "Failed to fetch service";
     }
   },
@@ -40,7 +40,7 @@ const zooService = {
       const response = await api.put(`${API_ENDPOINTS.ZOO_SERVICE}/${id}`, serviceData);
       return response.data; // Return the updated service data
     } catch (error) {
-     
+      console.error("Error updating service:", error);
       throw error.response?.data?.message || "Failed to update service";
     }
   },
@@ -51,7 +51,7 @@ const zooService = {
       const response = await api.delete(`${API_ENDPOINTS.ZOO_SERVICE}/${id}`);
       return response.data; // Return the response after deletion
     } catch (error) {
-    
+      console.error("Error deleting service:", error);
       throw error.response?.data?.message || "Failed to delete service";
     }
   }
