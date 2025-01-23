@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
         setUser(decoded);
         navigateToRole(decoded.role); 
       } catch (error) {
-        console.error("Invalid token");
+        
         localStorage.removeItem("token");
       }
     }

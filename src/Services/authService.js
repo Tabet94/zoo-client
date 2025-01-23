@@ -7,7 +7,7 @@ const authService = {
   login: async (credentials) => {
     try {
       const response = await api.post(API_ENDPOINTS.LOGIN, credentials);
-      console.log('Login response:', response);
+      
       const { token } = response;
 
       if (!token) {
@@ -16,10 +16,10 @@ const authService = {
 
       localStorage.setItem('token', token);
       const decoded = jwtDecode(token);
-      console.log('Decoded user:', decoded);
+   
       return { ...response, user: decoded };
     } catch (error) {
-      console.error('Login failed:', error);
+      
       throw new Error('Login failed, please check your credentials or try again later.');
     }
   },
@@ -38,7 +38,7 @@ const authService = {
       const response = await api.post(API_ENDPOINTS.REGISTER_VET, userData);
       return response.data; 
     } catch (error) {
-      console.error("Registration error:", error.response?.data); 
+      
       if (error.response && error.response.data) {
         throw new Error(error.response.data.message); 
       }
@@ -50,7 +50,7 @@ const authService = {
   // Logout function with token removal and cleanup
   logout: () => {
     localStorage.removeItem("token");  // Remove token from localStorage
-    console.log('User logged out successfully');
+    
   },
 
  

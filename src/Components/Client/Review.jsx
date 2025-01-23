@@ -36,7 +36,7 @@ const Review = () => {
             <CardBody>
               <Stack spacing={4}>
                 <Box display="flex" alignItems="center" justifyContent="space-between">
-                  <Avatar size="sm" name={review.pseudo} src={review.avatarUrl || 'https://bit.ly/sage-adebayo'} />  {/* Displaying Avatar */}
+                  <Avatar size="sm" name={review.pseudo} src={review} />  {/* Displaying Avatar */}
                   <Text fontWeight="bold" fontSize="lg" color="yellow.400">
                     {review.pseudo}
                   </Text>
