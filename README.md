@@ -22,3 +22,10 @@ npm install
 npm run dev
 L'application sera accessible à l’adresse :
 👉 http://localhost:5173/
+
+📌 Technologies Utilisées
+✅ React.js - Framework JavaScript
+✅ Vite - Outil de build rapide
+✅ Chakra UI - Bibliothèque de composants UI
+✅ Axios - Gestion des requêtes API
+✅ React Router - Gestion de la navigation
